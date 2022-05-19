@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from 'mongoose';
-import User from './user';
+import User from '../user';
 
-import * as db from '../db/testDb';
+import * as db from '../../db/testDb';
 
 const userData = {
     full_name: 'Test User',
