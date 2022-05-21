@@ -1,8 +1,22 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import crypto from 'crypto';
 
+export interface UserDocument extends Document {
+    fullName: string;
+    email: string;
+    password: string;
+    username: string;
+    salt: string;
+    userType: string;
+    createdAt: Date;
+    updatedAt: Date;
+    bio?: string;
+    setPassword(password: string): void;
+    validatePassword(password: string): boolean;
+}
+
 const UserSchema = new Schema({
-    full_name: {
+    fullName: {
         type: String,
         required: true,
     },
@@ -23,7 +37,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        min: [8, 'Minimum length should be of 8 characters.']
+        min: [8, 'Minimum length should be of 8 characters.'],
     },
     username: {
         type: String,
@@ -39,6 +53,18 @@ const UserSchema = new Schema({
     bio: {
         type: String,
     },
+});
+
+UserSchema.pre('save', function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+
+    if (!this.salt) {
+        throw new Error('Please save password with setPassword method');
+    }
+
+    next();
 });
 
 const keyLength = 512;
@@ -61,4 +87,4 @@ UserSchema.methods.validatePassword = function (password: string) {
     return this.password === hash;
 };
 
-export default model('User', UserSchema);
+export default model<UserDocument>('User', UserSchema);
