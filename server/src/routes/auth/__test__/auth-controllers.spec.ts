@@ -45,64 +45,64 @@ describe('Test SignUp controller', () => {
         });
     });
 
-    // describe('given invalid data', () => {
-    //     it('should match both the passwords', async () => {
-    //         const { statusCode, body } = await request(app)
-    //             .post('api/v1/auth/signup')
-    //             .send({
-    //                 ...signUpData,
-    //                 confirmPassword: 'IDontMatch',
-    //             });
+    describe('given invalid data', () => {
+        it('should match both the passwords', async () => {
+            const { statusCode, body } = await request(app)
+                .post('/api/v1/auth/signup')
+                .send({
+                    ...signUpData,
+                    confirmPassword: 'IDontMatch',
+                });
 
-    //         expect(statusCode).toBe(400);
-    //         expect(body.message).toBe('Passwords do not match');
-    //     });
+            expect(statusCode).toBe(400);
+            expect(body.message).toBe('Passwords do not match');
+        });
 
-    //     it('should return 400 if email is missing', async () => {
-    //         const {email, ...rest} = signUpData
-    //         const { statusCode, body } = await request(app)
-    //             .post('api/v1/auth/signup')
-    //             .send({
-    //                 ...rest,
-    //             });
+        it('should return 400 if email is missing', async () => {
+            const {email, ...rest} = signUpData
+            const { statusCode, body } = await request(app)
+                .post('/api/v1/auth/signup')
+                .send({
+                    ...rest,
+                });
 
-    //         expect(statusCode).toBe(400);
-    //         expect(body.message).toBe('Make sure all fields are correctly sent')
-    //     })
-    //     it('should return 400 if username is missing', async () => {
-    //         const {username, ...rest} = signUpData
-    //         const { statusCode, body } = await request(app)
-    //             .post('api/v1/auth/signup')
-    //             .send({
-    //                 ...rest,
-    //             });
+            expect(statusCode).toBe(400);
+            expect(body.message).toBe('Make sure all fields are correctly sent')
+        })
+        it('should return 400 if username is missing', async () => {
+            const {username, ...rest} = signUpData
+            const { statusCode, body } = await request(app)
+                .post('/api/v1/auth/signup')
+                .send({
+                    ...rest,
+                });
 
-    //         expect(statusCode).toBe(400);
-    //         expect(body.message).toBe('Make sure all fields are correctly sent')
-    //     })
-    //     it('should return 400 if  fullName is missing', async () => {
-    //         const {fullName, ...rest} = signUpData
-    //         const { statusCode, body } = await request(app)
-    //             .post('api/v1/auth/signup')
-    //             .send({
-    //                 ...rest,
-    //             });
+            expect(statusCode).toBe(400);
+            expect(body.message).toBe('Make sure all fields are correctly sent')
+        })
+        it('should return 400 if  fullName is missing', async () => {
+            const {fullName, ...rest} = signUpData
+            const { statusCode, body } = await request(app)
+                .post('/api/v1/auth/signup')
+                .send({
+                    ...rest,
+                });
 
-    //         expect(statusCode).toBe(400);
-    //         expect(body.message).toBe('Make sure all fields are correctly sent')
-    //     })
+            expect(statusCode).toBe(400);
+            expect(body.message).toBe('Make sure all fields are correctly sent')
+        })
 
 
-    //     it('should return 400 if userType is missing', async () => {
-    //         const {userType, ...rest} = signUpData
-    //         const { statusCode, body } = await request(app)
-    //             .post('api/v1/auth/signup')
-    //             .send({
-    //                 ...rest,
-    //             });
+        it('should return 400 if userType is missing', async () => {
+            const {userType, ...rest} = signUpData
+            const { statusCode, body } = await request(app)
+                .post('/api/v1/auth/signup')
+                .send({
+                    ...rest,
+                });
 
-    //         expect(statusCode).toBe(400);
-    //         expect(body.message).toBe('Make sure all fields are correctly sent')
-    //     })
-    // });
+            expect(statusCode).toBe(400);
+            expect(body.message).toBe('Make sure all fields are correctly sent')
+        })
+    });
 });
