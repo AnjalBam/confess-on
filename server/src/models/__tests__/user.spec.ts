@@ -1,42 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from 'mongoose';
-import User from '../user';
+import User from '../user.model';
 
-import * as db from '../../db/testDb';
+import * as db from '../../test/db/testDb';
+import { validUserData } from '../../test/fixtures';
 
-const userData = {
-    full_name: 'Test User',
-    email: 'test@email.com',
-    password: 'password',
-    username: 'testuser',
-    userType: 'user',
-    bio: "Test User's bio",
-};
-
-beforeAll(async() => {
+beforeAll(async () => {
     await db.setupDb();
-})
+});
 
 afterEach(async () => {
     await db.dropCollections();
-})
+});
 
-afterAll( async () => {
+afterAll(async () => {
     await db.dropDatabase();
-})
+});
 
 describe('Test User Model', () => {
     it('should create and save a user', async () => {
-        const user = new User(userData);
+        const user = new User(validUserData);
+
+        user.setPassword(validUserData.password);
 
         const savedUser = await user.save();
 
         expect(savedUser._id).toBeDefined();
-        expect(savedUser.email).toBe(userData.email);
-        expect(user.username).toBe(userData.username);
-        expect(user.userType).toBe(userData.userType);
-        expect(user.bio).toBe(userData.bio);
-        expect(user.salt).toBeUndefined();
+        expect(savedUser.email).toBe(validUserData.email);
+        expect(user.username).toBe(validUserData.username);
+        expect(user.userType).toBe(validUserData.userType);
+        expect(user.bio).toBe(validUserData.bio);
     });
 
     it('should not save without required fields', async () => {
@@ -52,15 +45,15 @@ describe('Test User Model', () => {
         }
 
         expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
-        expect(err.errors.full_name).toBeDefined();
+        expect(err.errors.fullName).toBeDefined();
         expect(err.errors.email).toBeDefined();
         expect(err.errors.password).toBeDefined();
         expect(err.errors.username).toBeDefined();
     });
 
-    it("should not save with and invalid email address", async () => {
+    it('should not save with and invalid email address', async () => {
         const user = new User({
-            ...userData,
+            ...validUserData,
             email: 'invalid',
         });
 
@@ -72,9 +65,41 @@ describe('Test User Model', () => {
             err = error;
         }
 
-        expect(user.validate()).rejects.toThrow()
+        expect(user.validate()).rejects.toThrow();
 
         expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
         expect(err.errors.email).toBeDefined();
+    });
+
+    it('should save hashed password password with salt saved.', async () => {
+        const user = new User(validUserData);
+
+        user.setPassword(validUserData.password);
+
+        await user.save();
+
+        expect(user.salt).toBeDefined();
+    })
+
+    it ('should throw if password if not set with setPassword', async () => {
+        const user = new User(validUserData);
+
+        try {
+            await user.save()
+        } catch (err) {
+            expect(err).toBeDefined();
+            expect(err).toBeInstanceOf(Error);
+        }
+    });
+
+    it('should validate password effectively', () => {
+        const user = new User(validUserData);
+
+        user.setPassword(validUserData.password);
+        user.save();
+
+
+        expect(user.validatePassword('wrongPassword')).toBe(false);
+        expect(user.validatePassword(validUserData.password)).toBe(true);
     })
 });
