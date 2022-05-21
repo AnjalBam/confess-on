@@ -15,45 +15,50 @@ export interface UserDocument extends Document {
     validatePassword(password: string): boolean;
 }
 
-const UserSchema = new Schema({
-    fullName: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        validate: {
-            validator: (value: string) => {
-                return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-                    value
-                );
+const UserSchema = new Schema(
+    {
+        fullName: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            validate: {
+                validator: (value: string) => {
+                    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                        value
+                    );
+                },
+                message: '{VALUE} is not a valid email address!',
             },
-            message: '{VALUE} is not a valid email address!',
+        },
+        salt: String,
+        password: {
+            type: String,
+            required: true,
+            min: [8, 'Minimum length should be of 8 characters.'],
+        },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        userType: {
+            type: String,
+            required: true,
+            default: 'user',
+            enum: ['user', 'admin'],
+        },
+        bio: {
+            type: String,
         },
     },
-    salt: String,
-    password: {
-        type: String,
-        required: true,
-        min: [8, 'Minimum length should be of 8 characters.'],
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    userType: {
-        type: String,
-        required: true,
-        default: 'user',
-        enum: ['user', 'admin'],
-    },
-    bio: {
-        type: String,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 UserSchema.pre('save', function (next) {
     if (!this.isModified('password')) {
