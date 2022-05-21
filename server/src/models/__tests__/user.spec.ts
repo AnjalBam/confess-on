@@ -21,8 +21,6 @@ describe('Test User Model', () => {
     it('should create and save a user', async () => {
         const user = new User(validUserData);
 
-        user.setPassword(validUserData.password);
-
         const savedUser = await user.save();
 
         expect(savedUser._id).toBeDefined();
@@ -74,32 +72,9 @@ describe('Test User Model', () => {
     it('should save hashed password password with salt saved.', async () => {
         const user = new User(validUserData);
 
-        user.setPassword(validUserData.password);
-
         await user.save();
 
         expect(user.salt).toBeDefined();
     })
 
-    it ('should throw if password if not set with setPassword', async () => {
-        const user = new User(validUserData);
-
-        try {
-            await user.save()
-        } catch (err) {
-            expect(err).toBeDefined();
-            expect(err).toBeInstanceOf(Error);
-        }
-    });
-
-    it('should validate password effectively', () => {
-        const user = new User(validUserData);
-
-        user.setPassword(validUserData.password);
-        user.save();
-
-
-        expect(user.validatePassword('wrongPassword')).toBe(false);
-        expect(user.validatePassword(validUserData.password)).toBe(true);
-    })
 });

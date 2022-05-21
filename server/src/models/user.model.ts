@@ -11,7 +11,6 @@ export interface UserDocument extends Document {
     createdAt: Date;
     updatedAt: Date;
     bio?: string;
-    setPassword(password: string): void;
     validatePassword(password: string): boolean;
 }
 
@@ -61,13 +60,17 @@ const UserSchema = new Schema(
 );
 
 UserSchema.pre('save', function (next) {
-    if (!this.isModified('password')) {
+    const user  = this as UserDocument;
+
+    if (!user.isModified('password')) {
         return next();
     }
 
-    if (!this.salt) {
-        throw new Error('Please save password with setPassword method');
-    }
+
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.password = crypto
+        .pbkdf2Sync(user.password, this.salt, iterations, keyLength, digest)
+        .toString(encoding);
 
     next();
 });
@@ -76,13 +79,6 @@ const keyLength = 512;
 const iterations = 10000;
 const digest = 'sha512';
 const encoding = 'hex';
-
-UserSchema.methods.setPassword = function (password: string) {
-    this.salt = crypto.randomBytes(16).toString('hex');
-    this.password = crypto
-        .pbkdf2Sync(password, this.salt, iterations, keyLength, digest)
-        .toString(encoding);
-};
 
 UserSchema.methods.validatePassword = function (password: string) {
     const hash = crypto

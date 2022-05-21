@@ -11,8 +11,8 @@ export async function createUser(
 ) {
     try {
         const user = await UserModel.create(input);
-        user.setPassword(input.password);
         user.save();
+        return user;
     } catch (err: unknown) {
         throw new Error(err as string);
     }
