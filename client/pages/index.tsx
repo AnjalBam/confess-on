@@ -9,7 +9,7 @@ const Home: NextPage = () => {
         <title>ConfessOn</title>
       </Head>
       <main>
-        <h1 className={styles.title}>Hello There</h1>
+        <h1 className={styles.title} id='helloworld'>Hello There</h1>
       </main>
     </div>
   )
