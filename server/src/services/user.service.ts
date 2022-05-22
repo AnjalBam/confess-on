@@ -5,7 +5,7 @@ export async function createUser(
     input: DocumentDefinition<
         Omit<
             UserDocument,
-            'createdAt' | 'updatedAt' | 'comparePassword' | 'validatePassword'
+            'createdAt' | 'updatedAt' | 'comparePassword' | 'validatePassword' | 'salt'
         >
     >
 ) {
