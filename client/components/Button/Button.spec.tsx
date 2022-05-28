@@ -124,15 +124,26 @@ describe("Test Button", () => {
     });
 
     describe("Test Button loading state", () => {
+        it("should not be loading by default", () => {
+            const { getByTestId } = render(<Button>Test</Button>);
+
+            const button = screen.getByTestId("custom-button");
+            const spinner = getByTestId("spinner");
+
+            expect(button).not.toHaveAttribute("disabled");
+            expect(spinner).not.toBeInTheDocument();
+        });
+
         it("spinner should be visible by default and button should be disabled", () => {
             const { getByTestId } = render(
                 <Button isLoading={true}>Test</Button>
             );
 
             const button = screen.getByTestId("custom-button");
+            const spinner = getByTestId("spinner");
 
             expect(button).toHaveAttribute("disabled");
-            expect(getByTestId("spinner")).toBeVisible();
+            expect(spinner).toBeVisible();
         });
     });
 
