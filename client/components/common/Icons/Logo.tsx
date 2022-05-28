@@ -25,8 +25,8 @@ const Logo: React.FC<IconProps> = ({
                 fill={color}
             />
             <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M34.8998 9.02684L34.8998 0V78.9692L34.8998 78.8264L0 43.9266L34.8998 9.02684ZM13.2619 43.9266L34.8998 22.2888V65.5645L13.2619 43.9266Z"
                 fill={color}
             />

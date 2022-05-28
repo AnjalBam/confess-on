@@ -1,7 +1,10 @@
+import routes from "constant/routes";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useState } from "react";
-import Button from "../components/Button";
+import toast from "react-hot-toast";
+import Button from "../components/common/Button";
 import styles from "../styles/Home.module.scss";
 
 const Home: NextPage = () => {
@@ -12,10 +15,13 @@ const Home: NextPage = () => {
                 <title>ConfessOn</title>
             </Head>
             <main>
+                <Link href={routes.login}>
+                    <Button>Login</Button>
+                </Link>
                 <Button
                     isLoading={isLoading}
                     onClick={() => {
-                        setIsLoading(!isLoading);
+                        toast.error('Oops!!')
                     }}
                 >
                     Click me
