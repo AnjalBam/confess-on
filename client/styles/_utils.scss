@@ -21,3 +21,12 @@
 .bottom-bordered {
     border-bottom: rgba(64, 64, 64, 0.2) 1px solid;
 }
+
+.content-wrapper {
+    padding: 0;
+    padding-top: $navbar_height;
+}
+
+.nav {
+    height: $navbar_height;
+}

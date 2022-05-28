@@ -9,7 +9,7 @@ import { colors } from "constant/colors";
 const NavBar = () => {
     return (
         <Wrapper className="bottom-bordered">
-            <nav className="mx-auto flex items-center justify-between px-4 pt-1 pb-2  text-slate-700 text-center">
+            <nav className="nav mx-auto flex items-center justify-between px-4 pt-1 pb-2  text-slate-700 text-center">
                 <Link href="/" className="cursor-pointer">
                     <div className="logo-wrapper flex items-end text-2xl font-bold mx-auto color-primary">
                         <Logo color={colors.primary} className='cursor-pointer' />
