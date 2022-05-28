@@ -1,5 +1,7 @@
 import Button from ".";
-import { screen, render } from "@testing-library/react";
+import { screen, render, cleanup, fireEvent } from "@testing-library/react";
+
+afterEach(cleanup);
 
 describe("Test Button", () => {
     describe("Test default button", () => {
@@ -44,6 +46,107 @@ describe("Test Button", () => {
 
             expect(button).toBeInTheDocument();
             expect(button).toHaveClass("bg-success");
+        });
+    });
+
+    describe("Test Button types", () => {
+        it("should have default type of button", () => {
+            render(<Button>Test Button</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveAttribute("type", "button");
+        });
+
+        it("should have type of button if button passed", () => {
+            render(<Button type="button">Test Button</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveAttribute("type", "button");
+        });
+
+        it("should have type of submit if submit passed", () => {
+            render(<Button type="submit">Test Button</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveAttribute("type", "submit");
+        });
+
+        it("should have type of reset if reset passed", () => {
+            render(<Button type="reset">Test Button</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveAttribute("type", "reset");
+        });
+    });
+
+    describe("Test Button disabled state", () => {
+        it("should not be disabled by default", () => {
+            render(<Button>Test</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).not.toBeDisabled();
+        });
+
+        it("should be disabled if passed", () => {
+            render(<Button disabled>Test</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toBeDisabled();
+        });
+    });
+
+    describe("Test Button children rendering", () => {
+        it("should render children properly", () => {
+            const htmlContent = (
+                <>
+                    <span>Test</span> Button{" "}
+                    <span data-testid="test-span">Hello</span>
+                </>
+            );
+            const { getByTestId } = render(<Button>{htmlContent}</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveTextContent("Test Button Hello");
+            expect(getByTestId("test-span")).toBeInTheDocument();
+        });
+    });
+
+    describe("Test Button loading state", () => {
+        it("spinner should be visible by default and button should be disabled", () => {
+            const { getByTestId } = render(
+                <Button isLoading={true}>Test</Button>
+            );
+
+            const button = screen.getByTestId("custom-button");
+
+            expect(button).toHaveAttribute("disabled");
+            expect(getByTestId("spinner")).toBeVisible();
+        });
+    });
+
+    describe("Test Button onClick", () => {
+        it("should call onClick callback", () => {
+            const onClick = jest.fn();
+            render(<Button onClick={onClick}>Test</Button>);
+
+            const button = screen.getByTestId("custom-button");
+
+            fireEvent.click(button);
+
+            expect(onClick).toHaveBeenCalled();
+            expect(onClick).toBeCalledTimes(1);
         });
     });
 });
