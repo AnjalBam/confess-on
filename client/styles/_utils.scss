@@ -2,10 +2,22 @@
     background-color: $primary_color;
 }
 
+.color-primary {
+    color: $primary_color;
+}
+
 .bg-secondary {
     background-color: $secondary_color;
 }
 
 .bg-dark {
     background-color: $dark;
+}
+
+.font-title {
+    font-family: $title_font;
+}
+
+.bottom-bordered {
+    border-bottom: rgba(64, 64, 64, 0.2) 1px solid;
 }

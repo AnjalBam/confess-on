@@ -12,9 +12,6 @@ const Home: NextPage = () => {
                 <title>ConfessOn</title>
             </Head>
             <main>
-                <p className="text-3xl font-bold underline bg-gray-600">
-                    Hello world!
-                </p>
                 <Button
                     isLoading={isLoading}
                     onClick={() => {

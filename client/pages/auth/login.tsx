@@ -5,7 +5,7 @@ const LoginPage: NextPage = () => {
     return (
         <div>
             <Head>
-                <title>Login</title>
+                <title>Login | ConfessOn</title>
             </Head>
             <section>
                 <h1>Login</h1>
