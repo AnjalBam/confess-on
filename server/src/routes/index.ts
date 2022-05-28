@@ -1,8 +1,14 @@
-import { Router } from "express";
-import authRoutes from "./auth.routes";
+import { Router, Request, Response } from 'express';
+import authRoutes from './auth.routes';
 
-const router = Router()
+const router = Router();
 
-router.use("/auth", authRoutes);
+router.use('/auth', authRoutes);
 
-export default router
+router.get('/connection-test', (req: Request, res: Response) => {
+    res.status(200).send({
+        message: 'Connection is working',
+    });
+});
+
+export default router;

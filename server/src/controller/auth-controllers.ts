@@ -5,6 +5,7 @@ import User from '../models/user.model';
 import { signJwtForUser } from '../utils/jwt';
 
 export const signUp = async (req: Request, res: Response) => {
+    console.log(req)
     const { body } = req;
     const { password, confirmPassword, ...rest } = body;
 
@@ -16,6 +17,7 @@ export const signUp = async (req: Request, res: Response) => {
         !password ||
         !confirmPassword
     ) {
+        console.log(rest, password, confirmPassword)
         return res.status(400).send({
             message: 'Make sure all fields are correctly sent',
         });

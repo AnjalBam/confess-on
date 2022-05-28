@@ -12,10 +12,12 @@
     "cypress": "cypress open"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "csstype": "^3.0.10",
     "formik": "^2.2.9",
     "next": "12.1.6",
     "react": "18.1.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "18.1.0",
     "react-hot-toast": "^2.2.0",
     "react-loading-icons": "^1.1.0",

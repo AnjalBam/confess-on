@@ -1,6 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import bodyParser from "body-parser";
+import bodyParser, { urlencoded } from "body-parser";
 import cors from 'cors';
 
 import routes from "./routes";

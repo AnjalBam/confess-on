@@ -6,18 +6,17 @@ import { LoginFormProps } from "./LoginForm.types";
 import InputField from "components/common/Input";
 import Button from "components/common/Button";
 
-const LoginForm: React.FC<LoginFormProps> = () => {
+import { loginInitialData as initialValues } from "constant";
+
+const LoginForm: React.FC<LoginFormProps> = ({handleSubmit}) => {
     const loginFormSchema = object().shape({
         email: string().email("Invalid email.").required("Email is required."),
         password: string().required("Password is required.").min(8, "Password must be at least 8 characters."),
     });
-    const initialValues = {
-        email: "",
-        password: "",
-    };
+    
     return (
         <Formik
-            onSubmit={(values) => console.log({ values })}
+            onSubmit={handleSubmit}
             initialValues={initialValues}
             validationSchema={loginFormSchema}
         >
