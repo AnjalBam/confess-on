@@ -3,27 +3,22 @@ import { ButtonProps } from "./Button.types";
 
 const Button: React.FC<ButtonProps> = ({
     children,
-    primary = true,
+    primary = false,
     secondary = false,
     isLoading = false,
     success = false,
     danger = false,
     className = "",
+    type="button",
     ...rest
 }) => {
     const bgColor = `${
         primary
             ? "bg-primary"
-            : secondary
-            ? "bg-secondary"
-            : success
-            ? "bg-success"
-            : danger
-            ? "bg-danger"
-            : "bg-primary"
+            : secondary ? "bg-secondary" : danger ? "bg-danger" : success ? "bg-success" : "bg-primary"
     }`;
     return (
-        <button className={`${className} ${bgColor}`} {...rest}>
+        <button data-testid='custom-button' type={type} className={`${bgColor} ${className}`} {...rest}>
             {children}
         </button>
     );

@@ -1,11 +1,3 @@
-node_modules
-dist
-
-.env
-.env.local
-
-coverage
-
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,nextjs
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,node,nextjs
@@ -14,6 +6,7 @@ coverage
 # Next build dir
 .next/
 
+.vscode/
 ### Node ###
 # Logs
 logs
