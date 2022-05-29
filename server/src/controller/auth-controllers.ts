@@ -12,7 +12,6 @@ export const signUp = async (req: Request, res: Response) => {
         !rest.email ||
         !rest.username ||
         !rest.fullName ||
-        !rest.userType ||
         !password ||
         !confirmPassword
     ) {
@@ -25,7 +24,23 @@ export const signUp = async (req: Request, res: Response) => {
         return res.status(400).send({ message: 'Passwords do not match' });
     }
 
-    const user = await createUser({ ...rest, password });
+    const uType = 'user';
+
+    const existingUserWithEmail = await User.findOne({ email: rest.email });
+    if (existingUserWithEmail) {
+        return res.status(400).send({
+            message: 'User with that email already exists',
+        });
+    }
+
+    const existingUserWithUsername = await User.findOne({ username: rest.username });
+    if (existingUserWithUsername) {
+        return res.status(400).send({
+            message: 'User with that username already exists',
+        });
+    }
+
+    const user = await createUser({ ...rest, password, userType: uType });
     const { _id, bio, email, fullName, username, userType } = user;
 
     return res.status(201).send({
