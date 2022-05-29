@@ -11,6 +11,7 @@ import { loginInitialData } from "constant";
 
 import { Cookies } from "react-cookie";
 import React from "react";
+import useQuery from "hooks/useQuery";
 
 const cookies = new Cookies();
 
@@ -18,9 +19,12 @@ const LoginPage: NextPage = () => {
     const authService = new AuthenticationService();
     const router = useRouter();
 
-    const nextRedirectUrl:string|undefined = router.query.next?.toString();
+    const nextRedirectUrl: string | undefined = router.query.next?.toString();
 
     const { isLoggedIn } = useUser();
+    const { isLoading, dispatchRequest } = useQuery();
+
+    console.log(isLoading);
 
     if (isLoggedIn) {
         toast.success("You are already logged in!");
@@ -28,26 +32,29 @@ const LoginPage: NextPage = () => {
     }
 
     const handleSubmit = async (values: typeof loginInitialData) => {
-        const res = await authService.login(values);
+        const { data, error } = await dispatchRequest(
+            authService.login,
+            values
+        );
 
-        if (res.success) {
-            const {
-                data: { message, data },
-            } = res;
-            if (data?.token) {
-                cookies.set("token", data.token, { path: "/" });
-                toast.success(message + ` as ${data?.username}`);
-                router.push(nextRedirectUrl || "/");
-                return;
-            }
-            toast.error('Some error occurred. Please try again.')
-        } else {
+        if (error) {
             toast.error(
-                res.error?.response?.data?.message ||
-                    res.error.message.toString() ||
-                    res.error.toString()
+                error?.response?.data?.message ||
+                    error.message.toString() ||
+                    error.toString()
             );
+            return;
         }
+
+        const { message, data: userData } = data;
+        
+        if (userData?.token) {
+            cookies.set("token", userData.token, { path: "/" });
+            toast.success(message + ` as ${userData?.username}`);
+            router.push(nextRedirectUrl || "/");
+            return;
+        }
+        toast.error("Some error occurred. Please try again.");
     };
     return (
         <div>
