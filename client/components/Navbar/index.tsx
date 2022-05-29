@@ -4,7 +4,7 @@ import Link from "next/link";
 import Wrapper from "components/Wrapper";
 import Logo from "components/common/Icons/Logo";
 import { colors } from "constant/colors";
-import routes from "constant/routes";
+import { routes } from "constant/routes";
 
 const NavBar = () => {
     return (

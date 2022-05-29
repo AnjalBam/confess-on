@@ -1,5 +1,5 @@
 import React from "react";
-import { Field, Formik, Form } from "formik";
+import { Formik, Form } from "formik";
 import { object, string } from "yup";
 import { LoginFormProps } from "./LoginForm.types";
 
@@ -8,12 +8,14 @@ import Button from "components/common/Button";
 
 import { loginInitialData as initialValues } from "constant";
 
-const LoginForm: React.FC<LoginFormProps> = ({handleSubmit}) => {
+const LoginForm: React.FC<LoginFormProps> = ({ handleSubmit }) => {
     const loginFormSchema = object().shape({
         email: string().email("Invalid email.").required("Email is required."),
-        password: string().required("Password is required.").min(8, "Password must be at least 8 characters."),
+        password: string()
+            .required("Password is required.")
+            .min(8, "Password must be at least 8 characters."),
     });
-    
+
     return (
         <Formik
             onSubmit={handleSubmit}
@@ -22,9 +24,14 @@ const LoginForm: React.FC<LoginFormProps> = ({handleSubmit}) => {
         >
             {({ isSubmitting, isValid }) => (
                 <Form>
-                    <InputField name="email" placeholder="Enter your email" />
+                    <InputField
+                        name="email"
+                        label="Email Address"
+                        placeholder="Enter your email"
+                    />
                     <InputField
                         name="password"
+                        label="Password"
                         type="password"
                         placeholder="Enter your password"
                     />
@@ -32,6 +39,7 @@ const LoginForm: React.FC<LoginFormProps> = ({handleSubmit}) => {
                         type="submit"
                         isLoading={isSubmitting}
                         disabled={!isValid}
+                        className={!isValid ? "mt-2" : "mt-4"}
                     >
                         {isSubmitting ? "Logging in..." : "Login"}
                     </Button>

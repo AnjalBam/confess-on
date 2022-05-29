@@ -1,4 +1,4 @@
-import routes from "constant/routes";
+import { routes } from "constant/routes";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
                         onClick={() => {
                             cookies.remove("token");
                             toast.success("Logged out successfully");
-                            router.push('/')
+                            router.push("/");
                         }}
                     >
                         Logout

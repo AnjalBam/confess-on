@@ -1,5 +1,5 @@
 import { AxiosError, AxiosInstance } from "axios";
-import { loginInitialData } from "constant";
+import { initialSignupData, loginInitialData } from "constant";
 import axiosInstance from "utils/axios";
 
 import { Cookies } from "react-cookie";
@@ -34,6 +34,25 @@ class AuthenticationService {
             const response = await this.axiosInstance.post(
                 "/auth/login",
                 credentials
+            );
+            this.res.message = response.data?.message;
+            this.res.data = response.data?.data;
+            this.res.error = null;
+            this.res.status = response.status;
+            this.res.success = true;
+        } catch (error: any) {
+            throw error;
+        }
+        return this.res;
+    };
+
+    public signup = async (
+        signUpData: typeof initialSignupData
+    ): Promise<typeof this.res> => {
+        try {
+            const response = await this.axiosInstance.post(
+                "/auth/signup",
+                signUpData
             );
             this.res.message = response.data?.message;
             this.res.data = response.data?.data;
