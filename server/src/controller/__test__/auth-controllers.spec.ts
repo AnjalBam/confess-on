@@ -134,6 +134,8 @@ describe('Test Auth controller', () => {
                 expect(body.message).toBe('Login Successful');
                 expect(body.data).toStrictEqual({
                     token: expect.any(String),
+                    username: signUpData.username,
+                    email: signUpData.email,
                 });
             })
         })

@@ -5,7 +5,6 @@ import User from '../models/user.model';
 import { signJwtForUser } from '../utils/jwt';
 
 export const signUp = async (req: Request, res: Response) => {
-    console.log(req)
     const { body } = req;
     const { password, confirmPassword, ...rest } = body;
 
@@ -17,7 +16,6 @@ export const signUp = async (req: Request, res: Response) => {
         !password ||
         !confirmPassword
     ) {
-        console.log(rest, password, confirmPassword)
         return res.status(400).send({
             message: 'Make sure all fields are correctly sent',
         });
@@ -62,10 +60,11 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = signJwtForUser(user);
+        const { email: userEmail, username } = user;
 
         return res.status(200).send({
             message: 'Login Successful',
-            data: { token },
+            data: { token, email: userEmail, username },
         });
     } catch (err: unknown) {
         return res.status(500).send({
