@@ -7,8 +7,17 @@ import toast from "react-hot-toast";
 import Button from "../components/common/Button";
 import styles from "../styles/Home.module.scss";
 import axios from "utils/axios";
+
+import { Cookies } from "react-cookie";
+import useUser from "hooks/useUser";
+import { useRouter } from "next/router";
+
+const cookies = new Cookies();
+
 const Home: NextPage = () => {
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const { isLoggedIn } = useUser();
     const fetchData = async () => {
         try {
             const { data } = await axios.get("/connection-test/");
@@ -27,9 +36,22 @@ const Home: NextPage = () => {
                 <title>ConfessOn</title>
             </Head>
             <main>
-                <Link href={routes.login}>
-                    <Button>Login</Button>
-                </Link>
+                {!isLoggedIn ? (
+                    <Link href={routes.login}>
+                        <Button>Login</Button>
+                    </Link>
+                ) : (
+                    <Button
+                        onClick={() => {
+                            cookies.remove("token");
+                            toast.success("Logged out successfully");
+                            router.push('/')
+                        }}
+                    >
+                        Logout
+                    </Button>
+                )}
+
                 <Button
                     isLoading={isLoading}
                     onClick={() => {

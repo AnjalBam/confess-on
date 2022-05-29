@@ -2,43 +2,7 @@ import React from "react";
 import { LoginProps } from "./Login.types";
 import LoginForm from "./LoginForm";
 
-import { loginInitialData } from "constant";
-import AuthenticationService from "services/auth";
-import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
-
-import { Cookies } from "react-cookie";
-import useUser from "hooks/useUser";
-
-const cookies = new Cookies();
-
-const Login: React.FC<LoginProps> = (props) => {
-    const authService = new AuthenticationService();
-    const router = useRouter();
-
-    const { isLoggedIn } = useUser();
-
-    if (isLoggedIn) {
-        toast.success("You are already logged in!");
-        router.push("/");
-    }
-
-    const handleSubmit = async (values: typeof loginInitialData) => {
-        const res = await authService.login(values);
-
-        if (res.success) {
-            const {
-                data: { message, data },
-            } = res;
-            if (data) {
-                data.token && cookies.set("token", data.token, { path: "/" });
-            }
-            toast.success(message);
-            router.push("/");
-        } else {
-            toast.error(res.error.message || res.error.toString());
-        }
-    };
+const Login: React.FC<LoginProps> = ({ handleSubmit }) => {
     return (
         <div
             data-cy="login"
