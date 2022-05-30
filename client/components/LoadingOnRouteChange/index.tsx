@@ -9,12 +9,10 @@ function LoadingOnRouteChange() {
 
     useEffect(() => {
         const handleStart = (url: string) => {
-            console.log("routing started");
-            url !== router.asPath ? setLoading(true) : setLoading(false);
+            setLoading(true);
         };
         const handleComplete = (url: string) => {
-            console.log("routing complete");
-            url === router.asPath ? setLoading(false) : setLoading(true);
+            setLoading(false);
         };
 
         router.events.on("routeChangeStart", handleStart);
@@ -28,8 +26,7 @@ function LoadingOnRouteChange() {
         };
     }, []);
 
-    if (loading) {
-        console.log('loading', loading)
+    if (!loading) {
         return <></>;
     }
 
