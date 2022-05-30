@@ -11,13 +11,14 @@ import axios from "utils/axios";
 import { Cookies } from "react-cookie";
 import useUser from "hooks/useUser";
 import { useRouter } from "next/router";
+import AuthenticationService from "services/auth";
 
 const cookies = new Cookies();
 
 const Home: NextPage = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const { isLoggedIn } = useUser();
+    const { isLoggedIn, revalidate } = useUser();
     const fetchData = async () => {
         try {
             const { data } = await axios.get("/connection-test/");
@@ -43,9 +44,9 @@ const Home: NextPage = () => {
                 ) : (
                     <Button
                         onClick={() => {
-                            cookies.remove("token");
+                            new AuthenticationService().logout();
                             toast.success("Logged out successfully");
-                            router.push("/");
+                            revalidate()
                         }}
                     >
                         Logout

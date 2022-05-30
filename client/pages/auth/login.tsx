@@ -22,9 +22,7 @@ const LoginPage: NextPage = () => {
     const nextRedirectUrl: string | undefined = router.query.next?.toString();
 
     const { isLoggedIn } = useUser();
-    const { isLoading, dispatchRequest } = useQuery();
-
-    console.log(isLoading);
+    const { dispatchRequest } = useQuery();
 
     if (isLoggedIn) {
         toast.success("You are already logged in!");

@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import NavBar from "components/Navbar";
 import { Toaster } from "react-hot-toast";
 import { colors } from "constant/colors";
+import LoadingOnRouteChange from "components/LoadingOnRouteChange";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     },
                 }}
             />
+            <LoadingOnRouteChange />
             <NavBar />
             <main className="content-wrapper">
                 <Component {...pageProps} />

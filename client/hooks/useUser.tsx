@@ -4,7 +4,7 @@ import { Cookies } from "react-cookie";
 const useUser = () => {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [token, setToken] = React.useState("");
-
+    const [validate, setValidate] = React.useState(false);
     const cookies = new Cookies();
 
     React.useEffect(() => {
@@ -14,9 +14,11 @@ const useUser = () => {
             setIsLoggedIn(true);
             setToken(t);
         }
-    }, []);
+    }, [validate]);
 
-    return { isLoggedIn, token };
+    const revalidate = () => setValidate(!validate);
+
+    return { isLoggedIn, token, revalidate };
 };
 
 export default useUser;
