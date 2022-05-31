@@ -87,3 +87,45 @@ export const login = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const changePassword = async (req: Request, res: Response) => {
+    const { body } = req;
+    const { password, newPassword, confirmNewPassword } = body;
+
+    if (!password || !newPassword || !confirmNewPassword) {
+        return res.status(400).send({
+            message: 'Make sure all fields are correctly sent',
+        });
+    }
+
+    try {
+        const user = await User.findOne({email:'anjalbam81@gmail.com'});
+        if (!user) {
+            return res.status(400).send({
+                message: 'Invalid credentials',
+            });
+        }
+
+        if (!checkPasswords(newPassword, confirmNewPassword)) {
+            return res.status(400).send({ message: 'Passwords do not match' });
+        }
+
+        const isValid = await user.validatePassword(password);
+        if (!isValid) {
+            return res.status(400).send({
+                message: 'Invalid password',
+            });
+        }
+
+        // user.password = newPassword;
+        // await user.save();
+
+        return res.status(200).send({
+            message: 'Password changed successfully',
+        });
+    } catch (err: unknown) {
+        return res.status(500).send({
+            message: 'An error occurred',
+        });
+    }
+}
