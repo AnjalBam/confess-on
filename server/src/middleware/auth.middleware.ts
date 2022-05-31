@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyJwtForUser } from '../utils/jwt';
 
-export const isAuthenticated = async (
+export const isAuthenticated = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -17,7 +17,7 @@ export const isAuthenticated = async (
     if (!bearerToken.startsWith('Bearer ')) {
         return res.status(401).send({
             message: 'You are not authorized.',
-            error: 'Invalid token format. Use \'Bearer $token\'.',
+            error: "Invalid token format. Use 'Bearer $token'.",
         });
     }
 

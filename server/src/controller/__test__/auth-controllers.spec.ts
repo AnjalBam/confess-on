@@ -98,20 +98,6 @@ describe('Test Auth controller', () => {
                     'Make sure all fields are correctly sent'
                 );
             });
-
-            it('should return 400 if userType is missing', async () => {
-                const { userType, ...rest } = signUpData;
-                const { statusCode, body } = await request(app)
-                    .post('/api/v1/auth/signup')
-                    .send({
-                        ...rest,
-                    });
-
-                expect(statusCode).toBe(400);
-                expect(body.message).toBe(
-                    'Make sure all fields are correctly sent'
-                );
-            });
         });
     });
 

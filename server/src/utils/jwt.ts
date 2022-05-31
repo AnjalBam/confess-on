@@ -31,7 +31,7 @@ export const verifyJwtForUser = (token: string) => {
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-        console.error(err);
+        // console.error(err);
         return {
             valid: false,
             expired: err?.message === 'jwt expired',
