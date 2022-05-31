@@ -99,7 +99,7 @@ export const changePassword = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await User.findOne({email:'anjalbam81@gmail.com'});
+        const user = await User.findOne({email:body?.user?.email});
         if (!user) {
             return res.status(400).send({
                 message: 'Invalid credentials',
@@ -113,12 +113,12 @@ export const changePassword = async (req: Request, res: Response) => {
         const isValid = await user.validatePassword(password);
         if (!isValid) {
             return res.status(400).send({
-                message: 'Invalid password',
+                message: 'Invalid old password.',
             });
         }
 
-        // user.password = newPassword;
-        // await user.save();
+        user.password = newPassword;
+        await user.save();
 
         return res.status(200).send({
             message: 'Password changed successfully',
