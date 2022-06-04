@@ -56,7 +56,7 @@ describe('TEST POST SERVICE', () => {
                     ...validPostData,
                     likes: [],
                 } as unknown as Query<unknown, unknown, object, PostDocument>);
-            const post = await getPostById(validPostData._id.toString());
+            const post = await getPostById(validPostData._id);
 
             expect(spyOnFindById).toHaveBeenCalledTimes(1);
             expect(spyOnFindById).toHaveBeenCalledWith(validPostData._id);
@@ -73,7 +73,7 @@ describe('TEST POST SERVICE', () => {
                 .mockRejectedValue('Error Occurred');
 
             try {
-                const post = await getPostById(validPostData._id.toString());
+                const post = await getPostById(validPostData._id);
                 expect(post).toBeUndefined();
                 expect(post).toThrowError('Error Occurred');
             } catch (err) {

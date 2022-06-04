@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Post, { PostDocument } from '../models/post.model';
 
 export const createPost = async (
@@ -12,7 +13,7 @@ export const createPost = async (
     }
 };
 
-export const getPostById = async (postId: string) => {
+export const getPostById = async (postId: string | mongoose.Types.ObjectId) => {
     try {
         const post = await Post.findById(postId);
         return post;
