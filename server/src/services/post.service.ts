@@ -11,3 +11,12 @@ export const createPost = async (
         throw new Error(err as string);
     }
 };
+
+export const getPostById = async (postId: string) => {
+    try {
+        const post = await Post.findById(postId);
+        return post;
+    } catch (err) {
+        throw new Error(err as string);
+    }
+}
