@@ -33,7 +33,9 @@ export const signUp = async (req: Request, res: Response) => {
         });
     }
 
-    const existingUserWithUsername = await User.findOne({ username: rest.username });
+    const existingUserWithUsername = await User.findOne({
+        username: rest.username,
+    });
     if (existingUserWithUsername) {
         return res.status(400).send({
             message: 'User with that username already exists',
@@ -99,7 +101,7 @@ export const changePassword = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await User.findOne({email:body?.user?.email});
+        const user = await User.findOne({ email: body?.user?.email });
         if (!user) {
             return res.status(400).send({
                 message: 'Invalid credentials',
@@ -128,4 +130,4 @@ export const changePassword = async (req: Request, res: Response) => {
             message: 'An error occurred',
         });
     }
-}
+};

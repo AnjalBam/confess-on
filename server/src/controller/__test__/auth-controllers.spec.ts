@@ -5,7 +5,12 @@ import { init } from '../../test/utils/app';
 import User from '../../models/user.model';
 import mongoose from 'mongoose';
 
-import { signUpData } from '../../test/fixtures/user.fixture';
+import {
+    signUpData,
+    changePasswordData,
+} from '../../test/fixtures/user.fixture';
+
+import {changePassword} from '../auth-controllers'
 
 const app = init();
 
@@ -104,7 +109,7 @@ describe('Test Auth controller', () => {
     describe('Test login controller', () => {
         beforeAll(async () => {
             await request(app).post('/api/v1/auth/signup').send(signUpData);
-        })
+        });
         describe('Given valid data', () => {
             it('should return jwt token as data', async () => {
                 const { statusCode, body } = await request(app)
@@ -113,8 +118,8 @@ describe('Test Auth controller', () => {
                         email: signUpData.email,
                         password: signUpData.password,
                     });
-                
-                    expect(statusCode).toBe(200);
+
+                expect(statusCode).toBe(200);
 
                 expect(statusCode).toBe(200);
                 expect(body.message).toBe('Login Successful');
@@ -123,8 +128,8 @@ describe('Test Auth controller', () => {
                     username: signUpData.username,
                     email: signUpData.email,
                 });
-            })
-        })
+            });
+        });
 
         describe('Given invalid data', () => {
             it('should return status 400 with a message', async () => {
@@ -134,11 +139,10 @@ describe('Test Auth controller', () => {
                         email: signUpData.email,
                         password: 'iAmInvalid',
                     });
-                
 
                 expect(statusCode).toBe(400);
                 expect(body.message).toBe('Invalid credentials');
-            })
+            });
 
             it('should return 400 if any data is missing', async () => {
                 const noPassword = await request(app)
@@ -152,28 +156,29 @@ describe('Test Auth controller', () => {
                     .send({
                         password: signUpData.password,
                     });
-                
 
                 expect(noPassword.statusCode).toBe(400);
-                expect(noPassword.body.message).toBe('Make sure all fields are correctly sent');
-
+                expect(noPassword.body.message).toBe(
+                    'Make sure all fields are correctly sent'
+                );
 
                 expect(noEmail.statusCode).toBe(400);
-                expect(noEmail.body.message).toBe('Make sure all fields are correctly sent');
-            })
+                expect(noEmail.body.message).toBe(
+                    'Make sure all fields are correctly sent'
+                );
+            });
 
             it('should return 400 if non existent email used', async () => {
                 const { statusCode, body } = await request(app)
                     .post('/api/v1/auth/login')
                     .send({
                         email: 'idontexist@example.com',
-                        password: 'testpassword'
+                        password: 'testpassword',
                     });
-                
-                expect(statusCode).toBe(400)
-                expect(body.message).toBe('Invalid credentials')
 
-            })
-        })
-    })
+                expect(statusCode).toBe(400);
+                expect(body.message).toBe('Invalid credentials');
+            });
+        });
+    });
 });

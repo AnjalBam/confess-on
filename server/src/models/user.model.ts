@@ -14,7 +14,7 @@ export interface UserDocument extends Document {
     validatePassword(password: string): boolean;
 }
 
-const UserSchema = new Schema(
+export const UserSchema = new Schema(
     {
         fullName: {
             type: String,
