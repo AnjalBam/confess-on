@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as authControllers from '../auth-controllers';
 import { Query } from 'mongoose';
 import { changePasswordData, userData } from '../../test/fixtures/user.fixture';
-import User, { UserDocument, UserSchema } from '../../models/user.model';
+import User, { UserDocument } from '../../models/user.model';
 import * as helpers from '../helpers';
 
 describe('Test change password', () => {
