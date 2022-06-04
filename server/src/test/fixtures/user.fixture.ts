@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { UserDocument } from "../../models/user.model";
 
 export const validUserData = {
@@ -21,7 +22,7 @@ export const changePasswordData = {
 }
 
 export const userData= {
-    _id: '5e9f8f8f8f8f8f8f8f8f8f8',
+    _id: new mongoose.Types.ObjectId(),
     fullName: 'Test User',
     email: 'test@email.com',
     password: 'password123',
