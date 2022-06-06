@@ -1,7 +1,7 @@
-import { Query } from 'mongoose';
+import { Query, Types } from 'mongoose';
 import Post, { PostDocument } from '../../models/post.model';
 import { validPostData, validPostInput } from '../../test/fixtures';
-import { createPost, getPostById } from '../post.service';
+import { createPost, getPostById, getPost } from '../post.service';
 
 describe('TEST POST SERVICE', () => {
     describe('test post create', () => {
@@ -48,7 +48,7 @@ describe('TEST POST SERVICE', () => {
         });
     });
 
-    describe('get a post', () => {
+    describe('getPostById', () => {
         it('should get a post by id', async () => {
             const spyOnFindById = jest
                 .spyOn(Post, 'findById')
@@ -70,18 +70,65 @@ describe('TEST POST SERVICE', () => {
         it('should throw error if any occur', async () => {
             const spyOnFindById = jest
                 .spyOn(Post, 'findById')
-                .mockRejectedValue('Error Occurred');
+                .mockRejectedValueOnce('Error Occurred');
 
             try {
                 const post = await getPostById(validPostData._id);
                 expect(post).toBeUndefined();
                 expect(post).toThrowError('Error Occurred');
             } catch (err) {
-                expect(spyOnFindById).toHaveBeenCalledTimes(1);
+                expect(spyOnFindById).toHaveBeenCalled();
                 expect(spyOnFindById).toHaveBeenCalledWith(validPostData._id);
                 expect(err).toBeDefined();
                 expect(err).toBeInstanceOf(Error);
             }
-        })
+        });
+    });
+
+    describe('getPost', () => {
+        it('should get a post with filters', async () => {
+            const spyOnFind = jest.spyOn(Post, 'findOne').mockReturnValueOnce({
+                ...validPostData,
+                likes: [],
+            } as unknown as Query<unknown, unknown, object, PostDocument>);
+
+            try {
+                const filter = {
+                    _id: validPostData._id,
+                    user: new Types.ObjectId(),
+                };
+                const post = await getPost(filter);
+
+                expect(spyOnFind).toHaveBeenCalledTimes(1);
+                expect(spyOnFind).toHaveBeenCalledWith(filter);
+
+                expect(post).toBeDefined();
+                expect(post?.description).toBe(validPostData.description);
+                expect(post?.visibility).toBe(validPostData.visibility);
+                expect(post?.likes).toHaveLength(0);
+            } catch (err) {
+                expect(err).toBeUndefined();
+            }
+        });
+
+        it('should throw error if any occur', async () => {
+            const spyOnFind = jest
+                .spyOn(Post, 'findOne')
+                .mockRejectedValueOnce('Error Occurred');
+
+            try {
+                const filter = {
+                    _id: validPostData._id,
+                    user: new Types.ObjectId(),
+                };
+                const post = await getPost(filter);
+                expect(post).toBeUndefined();
+                expect(post).toThrow('Error Occurred');
+            } catch (err) {
+                expect(err).toBeDefined();
+                expect(err).toBeInstanceOf(Error);
+                
+            }
+        });
     });
 });
