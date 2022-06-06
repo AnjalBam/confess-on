@@ -124,10 +124,10 @@ describe('TEST POST SERVICE', () => {
                 const post = await getPost(filter);
                 expect(post).toBeUndefined();
                 expect(post).toThrow('Error Occurred');
+                expect(spyOnFind).toHaveBeenCalled();
             } catch (err) {
                 expect(err).toBeDefined();
                 expect(err).toBeInstanceOf(Error);
-                
             }
         });
     });
