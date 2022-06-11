@@ -31,3 +31,12 @@ export const getPost = async (filter: FilterQuery<PostDocument>) => {
         throw new Error(err as string);
     }
 }
+
+export const getAllPosts = async () => {
+    try {
+        const posts = await Post.find();
+        return posts;
+    } catch (err) {
+        throw new Error(err as string);
+    }
+}

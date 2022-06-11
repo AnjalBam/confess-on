@@ -1,7 +1,11 @@
 import { Query, Types } from 'mongoose';
 import Post, { PostDocument } from '../../models/post.model';
-import { validPostData, validPostInput } from '../../test/fixtures';
-import { createPost, getPostById, getPost } from '../post.service';
+import {
+    generatePostDataArray,
+    validPostData,
+    validPostInput,
+} from '../../test/fixtures';
+import { createPost, getPostById, getPost, getAllPosts } from '../post.service';
 
 describe('TEST POST SERVICE', () => {
     describe('test post create', () => {
@@ -130,5 +134,44 @@ describe('TEST POST SERVICE', () => {
                 expect(err).toBeInstanceOf(Error);
             }
         });
+    });
+
+    describe('test getAllPosts', () => {
+        it('should fetch all the posts', async () => {
+            const spyOnFind = jest
+                .spyOn(Post, 'find')
+                .mockReturnValueOnce(
+                    generatePostDataArray() as unknown as Query<
+                        unknown[],
+                        unknown,
+                        object,
+                        PostDocument
+                    >
+                );
+
+                try {
+                    const posts = await getAllPosts();
+                    expect(spyOnFind).toHaveBeenCalledTimes(1);
+                    expect(posts.length).toBe(10);
+                } catch (err) {
+                    expect(err).toBeUndefined();
+                }
+        });
+
+        it('should throw error if any occur', async () => {
+            const spyOnFind = jest
+                .spyOn(Post, 'find')
+                .mockRejectedValueOnce('Error Occurred');
+
+            try {
+                const posts = await getAllPosts();
+                expect(posts).toBeUndefined();
+                expect(posts).toThrowError('Error Occurred');
+                expect(spyOnFind).toHaveBeenCalled();
+            } catch (err) {
+                expect(err).toBeDefined();
+                expect(err).toBeInstanceOf(Error);
+            }
+        })
     });
 });

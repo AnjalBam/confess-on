@@ -12,3 +12,16 @@ export const validPostData = {
     createdAt: new Date().toString(),
     modifiedAt: new Date().toString(),
 }
+
+const generatePostData = () => ({
+    ...validPostData,
+    likes: [],
+})
+
+export const generatePostDataArray = (count = 10): any[] => {
+    const result: any[] = [];
+    for (let i = 0; i < count; i++) {
+        result.push(generatePostData());
+    }
+    return result;
+}
