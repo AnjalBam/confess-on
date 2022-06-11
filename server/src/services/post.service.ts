@@ -20,8 +20,7 @@ export const getPostById = async (postId: string | mongoose.Types.ObjectId) => {
     } catch (err) {
         throw new Error(err as string);
     }
-}
-
+};
 
 export const getPost = async (filter: FilterQuery<PostDocument>) => {
     try {
@@ -30,13 +29,14 @@ export const getPost = async (filter: FilterQuery<PostDocument>) => {
     } catch (err) {
         throw new Error(err as string);
     }
-}
+};
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find(filter);
         return posts;
     } catch (err) {
         throw new Error(err as string);
     }
-}
+};
+

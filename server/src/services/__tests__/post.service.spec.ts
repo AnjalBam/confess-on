@@ -137,10 +137,10 @@ describe('TEST POST SERVICE', () => {
     });
 
     describe('test getAllPosts', () => {
-        it('should fetch all the posts', async () => {
+        it('should fetch all the posts by default', async () => {
             const spyOnFind = jest
                 .spyOn(Post, 'find')
-                .mockReturnValueOnce(
+                .mockReturnValue(
                     generatePostDataArray() as unknown as Query<
                         unknown[],
                         unknown,
@@ -161,7 +161,7 @@ describe('TEST POST SERVICE', () => {
         it('should throw error if any occur', async () => {
             const spyOnFind = jest
                 .spyOn(Post, 'find')
-                .mockRejectedValueOnce('Error Occurred');
+                .mockRejectedValue('Error Occurred');
 
             try {
                 const posts = await getAllPosts();
@@ -172,6 +172,31 @@ describe('TEST POST SERVICE', () => {
                 expect(err).toBeDefined();
                 expect(err).toBeInstanceOf(Error);
             }
-        })
+        });
+
+        it('should fetch all the posts by filter if passed any', async () => {
+            const spyOnFind = jest
+                .spyOn(Post, 'find')
+                .mockReturnValue(
+                    generatePostDataArray() as unknown as Query<
+                        unknown[],
+                        unknown,
+                        object,
+                        PostDocument
+                    >
+                );
+
+            try {
+                const filter = {
+                    user: new Types.ObjectId(),
+                };
+                const posts = await getAllPosts(filter);
+                expect(spyOnFind).toHaveBeenCalled();
+                expect(spyOnFind).toHaveBeenCalledWith(filter);
+                expect(posts.length).toBe(10);
+            } catch (err) {
+                expect(err).toBeUndefined();
+            }
+        });
     });
 });
