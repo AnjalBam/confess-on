@@ -18,8 +18,8 @@ const generatePostData = () => ({
     likes: [],
 })
 
-export const generatePostDataArray = (count = 10): any[] => {
-    const result: any[] = [];
+export const generatePostDataArray = (count = 10): unknown[] => {
+    const result: unknown[] = [];
     for (let i = 0; i < count; i++) {
         result.push(generatePostData());
     }
