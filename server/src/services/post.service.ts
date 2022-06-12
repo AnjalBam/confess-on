@@ -1,8 +1,10 @@
-import mongoose, { FilterQuery } from 'mongoose';
+import mongoose, { FilterQuery, DocumentDefinition } from 'mongoose';
 import Post, { PostDocument } from '../models/post.model';
 
 export const createPost = async (
-    postData: Omit<PostDocument, 'createdAt' | 'modifiedAt' | 'likes'>
+    postData: DocumentDefinition<
+        Omit<PostDocument, 'createdAt' | 'modifiedAt' | 'likes'>
+    >
 ) => {
     try {
         const post = new Post(postData);
@@ -39,4 +41,3 @@ export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
         throw new Error(err as string);
     }
 };
-
