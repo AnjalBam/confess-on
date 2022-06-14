@@ -13,7 +13,7 @@ export const validPostData = {
     modifiedAt: new Date().toString(),
 }
 
-const generatePostData = () => ({
+export const generatePostData = () => ({
     ...validPostData,
     likes: [],
 })

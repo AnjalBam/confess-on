@@ -1,12 +1,13 @@
 import {
     createPostController,
     getAllPostsController,
+    getPostController,
 } from '../post-controller';
 import * as postService from '../../services/post.service';
 import { Request, Response } from 'express';
 import {
     generatePostDataArray,
-    validPostData,
+    generatePostData,
     validPostInput,
 } from '../../test/fixtures';
 import mongoose from 'mongoose';
@@ -31,10 +32,11 @@ describe('Test Post Controllers', () => {
                     user: new mongoose.Types.ObjectId(),
                 },
             };
+            const postData = generatePostData();
             const spyOnCreatePost = jest
                 .spyOn(postService, 'createPost')
                 .mockResolvedValue(
-                    validPostData as unknown as PostDocument & { _id: string }
+                    postData as unknown as PostDocument & { _id: string }
                 );
             await createPostController(req as Request, res as Response);
 
@@ -42,7 +44,7 @@ describe('Test Post Controllers', () => {
             expect(res.send).toHaveBeenCalled();
             expect(res.send).toHaveBeenCalledWith({
                 message: expect.any(String),
-                data: validPostData,
+                data: postData,
             });
             expect(res.status).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(201);
@@ -88,15 +90,17 @@ describe('Test Post Controllers', () => {
                 .spyOn(postService, 'createPost')
                 .mockRejectedValue(new Error('Invalid'));
 
-            await createPostController(req as Request, res as Response);
+            try {
+                await createPostController(req as Request, res as Response);
+            } catch (err: unknown) {
+                expect(spyOnCreatePost).toHaveBeenCalledWith(validPostInput);
 
-            expect(spyOnCreatePost).toHaveBeenCalledWith(validPostInput);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.send).toHaveBeenCalledWith({
-                message: expect.any(String),
-                error: expect.any(Error),
-            });
+                expect(res.status).toHaveBeenCalledWith(500);
+                expect(res.send).toHaveBeenCalledWith({
+                    message: expect.any(String),
+                    error: expect.any(Error),
+                });
+            }
         });
     });
 
@@ -133,6 +137,65 @@ describe('Test Post Controllers', () => {
                 message: expect.any(String),
                 error: expect.any(Error),
             });
+        });
+    });
+
+    describe('getPostController', () => {
+        it('should get a post with status 200', async () => {
+            const postId = new mongoose.Types.ObjectId();
+            req = {
+                params: {
+                    id: postId.toString(),
+                },
+            };
+
+            const postData = {
+                ...generatePostData(),
+                _id: postId,
+            };
+
+            const spyOnGetPost = jest
+                .spyOn(postService, 'getPostById')
+                .mockResolvedValue({
+                    postData,
+                } as unknown as PostDocument & { _id: unknown });
+
+            await getPostController(req as Request, res as Response);
+
+            expect(spyOnGetPost).toHaveBeenCalled();
+            expect(spyOnGetPost).toHaveBeenCalledWith(postId.toString());
+
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.send).toHaveBeenCalledWith({
+                message: expect.any(String),
+                data: expect.any(Object)
+            });
+        });
+
+        it('should return 500 and error if any occurs', async () => {
+            const postId = new mongoose.Types.ObjectId();
+            req = {
+                params: {
+                    id: postId.toString(),
+                },
+            };
+
+            const spyOnGetPost = jest
+                .spyOn(postService, 'getPostById')
+                .mockRejectedValue(new Error('Invalid'));
+
+            try {
+                await getPostController(req as Request, res as Response);
+            } catch (err: unknown) {
+                expect(spyOnGetPost).toHaveBeenCalled();
+                expect(spyOnGetPost).toHaveBeenCalledWith(postId);
+
+                expect(res.send).toHaveBeenCalledWith({
+                    message: expect.any(String),
+                    error: expect.any(Error),
+                });
+                expect(res.status).toHaveBeenCalledWith(500);
+            }
         });
     });
 });

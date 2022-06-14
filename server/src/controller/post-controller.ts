@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { createPost, getAllPosts } from '../services/post.service';
+import mongoose from 'mongoose';
+import { createPost, getAllPosts, getPostById } from '../services/post.service';
 
 export const createPostController = async (req: Request, res: Response) => {
     const { body } = req;
@@ -21,7 +22,7 @@ export const createPostController = async (req: Request, res: Response) => {
         const post = await createPost({
             description,
             visibility,
-            user,
+            user: user.id,
         });
         return res.status(201).send({
             message: 'Post created successfully',
@@ -36,16 +37,39 @@ export const createPostController = async (req: Request, res: Response) => {
 };
 
 export const getAllPostsController = async (req: Request, res: Response) => {
-    try{
+    try {
         const posts = await getAllPosts();
         res.status(200).send({
             message: 'Posts fetched successfully',
-            data: posts
-        })
+            data: posts,
+        });
     } catch (err: unknown) {
         return res.status(500).send({
             message: 'Some error occurred. Try Again.',
-            error: err
-        })
+            error: err,
+        });
     }
-}
+};
+
+export const getPostController = async (req: Request, res: Response) => {
+    const postId = req.params.id;
+    console.log(postId);
+    try {
+        const post = await getPostById(postId);
+        if (!post) {
+            return res.status(400).send({
+                message: 'Post not found.',
+            });
+        }
+
+        res.status(200).send({
+            message: 'Post fetched successfully.',
+            data: post,
+        });
+    } catch (err: unknown) {
+        res.status(500).send({
+            message: 'Some error occurred. Try Again.',
+            error: err,
+        });
+    }
+};
