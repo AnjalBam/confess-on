@@ -53,7 +53,6 @@ export const getAllPostsController = async (req: Request, res: Response) => {
 
 export const getPostController = async (req: Request, res: Response) => {
     const postId = req.params.id;
-    console.log(postId);
     try {
         const post = await getPostById(postId);
         if (!post) {
