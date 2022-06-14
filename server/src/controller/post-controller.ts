@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import { createPost, getAllPosts, getPostById } from '../services/post.service';
 
 export const createPostController = async (req: Request, res: Response) => {
