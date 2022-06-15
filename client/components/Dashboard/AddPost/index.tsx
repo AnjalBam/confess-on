@@ -29,6 +29,7 @@ const AddPost = () => {
                                     validate={false}
                                     placeholder="What are you thinking?"
                                     className={'h-32 text-slate-500'}
+                                    required
                                 />
                             </div>
                             <InputField
