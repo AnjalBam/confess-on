@@ -11,7 +11,7 @@ const cookies = new Cookies();
 
 const AuthContextProvider: React.FC<any> = ({children}) => {
 
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [isLoggedIn, setIsLoggedIn] = React.useState<null | boolean>(null);
     useEffect(() => {
         const token = cookies.get('token');
         if (token) {

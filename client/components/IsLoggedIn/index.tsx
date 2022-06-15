@@ -7,10 +7,10 @@ const IsLoggedIn = () => {
     const { isLoggedIn } = React.useContext(AuthContext);
     const router = useRouter();
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (isLoggedIn === false) {
             router.push(routes.login + '?next=' + router.pathname);
         }
-    }, []);
+    }, [isLoggedIn]);
     return <></>;
 };
 
