@@ -1,17 +1,16 @@
-on:
+name: Build client
+
+on: 
   - push
   - pull_request
 
-name: TEST server
-
 jobs:
-  build:
+  build-client:
     runs-on: ubuntu-latest
-
 
     defaults:
       run:
-        working-directory: ./server 
+        working-directory: ./client
 
     steps:
       - name: Checkout
@@ -45,5 +44,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Test server
+      - name: Test client
         run: pnpm run test
+      
+      - name: Build client
+        run: pnpm run build
