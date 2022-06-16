@@ -35,7 +35,7 @@ export const getPost = async (filter: FilterQuery<PostDocument>) => {
 
 export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
     try {
-        const posts = await Post.find(filter);
+        const posts = await Post.find(filter).populate('user', '-password -salt -createdAt -updatedAt');
         return posts;
     } catch (err) {
         throw new Error(err as string);
