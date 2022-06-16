@@ -26,7 +26,7 @@ const Post:React.FC<{post: any}> = ({post}) => {
                     <div className="text-sm font-bold ml-2">
                         <Link href="#">
                             <a className="text-slate-800 font-title text-base">
-                                John Doe
+                                {post.user?.fullName}
                             </a>
                         </Link>
                         <p className="text-sm text-slate-400 font-normal">
