@@ -1,7 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    userData,
-    validPostData,
-    validUserData,
     validPostInput,
 } from '../../test/fixtures';
 import Post from '../post.model';

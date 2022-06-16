@@ -12,6 +12,7 @@ import { loginInitialData } from "constant";
 import { Cookies } from "react-cookie";
 import React from "react";
 import useQuery from "hooks/useQuery";
+import { AuthContext } from "context/auth-context";
 
 const cookies = new Cookies();
 
@@ -21,7 +22,8 @@ const LoginPage: NextPage = () => {
 
     const nextRedirectUrl: string | undefined = router.query.next?.toString();
 
-    const { isLoggedIn } = useUser();
+    // const { isLoggedIn } = useUser();
+    const {isLoggedIn, setIsLoggedIn} = React.useContext(AuthContext);
     const { dispatchRequest } = useQuery();
 
     if (isLoggedIn) {
@@ -48,6 +50,7 @@ const LoginPage: NextPage = () => {
         
         if (userData?.token) {
             cookies.set("token", userData.token, { path: "/" });
+            setIsLoggedIn(true);
             toast.success(message + ` as ${userData?.username}`);
             router.push(nextRedirectUrl || "/");
             return;

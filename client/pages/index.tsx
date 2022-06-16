@@ -55,14 +55,9 @@ const Home: NextPage = () => {
 
                 <Button
                     isLoading={isLoading}
-                    onClick={() => {
-                        toast.loading("Testing connection...", {
-                            duration: 1000,
-                        });
-                        fetchData().then((data) => console.log(data));
-                    }}
+                    onClick={revalidate}
                 >
-                    Test connection
+                    revalidate
                 </Button>
             </main>
         </div>

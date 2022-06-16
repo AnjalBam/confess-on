@@ -7,13 +7,22 @@
 @import './varialbles';
 @import './utils';
 
+* {
+  box-sizing: border-box;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
 
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: $body_font;
-  background-color: $light_color;
+  background-color: #fff;
 }
 
 a {

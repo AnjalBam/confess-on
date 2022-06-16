@@ -14,6 +14,14 @@
     background-color: $dark;
 }
 
+.bg-light {
+    background-color: $light_color;
+}
+
+.bg-hover-primary:hover {
+    background-color: rgba($primary_color, 10%);
+}
+
 .font-title {
     font-family: $title_font;
 }

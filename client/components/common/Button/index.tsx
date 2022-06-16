@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
         <button
             data-testid="custom-button"
             type={type}
-            className={`${bgColor} rounded-lg shadow transition-all duration-300  px-6 py-2 text-white font-regular flex items-center ${className}`}
+            className={`${bgColor} rounded-lg shadow transition-all duration-300  px-6 py-2 text-white font-regular flex items-center disabled:bg-slate-400 ${className}`}
             disabled={isLoading || disabled}
             {...rest}
         >
