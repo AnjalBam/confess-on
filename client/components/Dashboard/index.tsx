@@ -1,5 +1,6 @@
 import React from 'react';
 import AddPost from './AddPost';
+import Post from './Post';
 
 const DashboardContent = () => {
     return (
@@ -8,7 +9,9 @@ const DashboardContent = () => {
                 <AddPost />
             </div>
             <div>
-                <div>postList</div>
+                {[1, 2, 3].map(i => {
+                    return <Post key={i} />
+                })}
             </div>
         </>
     );

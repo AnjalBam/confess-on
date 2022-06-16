@@ -17,7 +17,7 @@ const AddPost = () => {
         console.log(values);
     };
     return (
-        <div className="p-4">
+        <div className="p-4 md:shadow-md rounded-lg md:mt-4">
             <Formik initialValues={post} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => {
                     return (
@@ -28,14 +28,14 @@ const AddPost = () => {
                                     name="description"
                                     validate={false}
                                     placeholder="What are you thinking?"
-                                    className={'h-32 text-slate-500'}
+                                    className={'h-32 text-slate-500 bg-light border-2 rounded-lg border-slate-100'}
                                     required
                                 />
                             </div>
                             <InputField
                                 as="select"
                                 name="visibility"
-                                className="w-1/2 text-slate-400 self-end"
+                                className="w-1/2 text-slate-400 self-end bg-light border-2  rounded-lg border-slate-100"
                                 validate={false}>
                                 <option value="public">Public</option>
                                 <option value="private">Private</option>

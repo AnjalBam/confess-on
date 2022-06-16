@@ -8,7 +8,7 @@ import { routes } from "constant/routes";
 
 const NavBar = () => {
     return (
-        <div className="bottom-bordered fixed top-0 left-0 right-0">
+        <div className="bottom-bordered fixed top-0 left-0 right-0 bg-white z-50">
             <Wrapper>
                 <nav className="nav mx-auto flex items-center justify-between px-4 pt-1 pb-2  text-slate-700 text-center">
                     <Link href={routes.home} className="cursor-pointer">
