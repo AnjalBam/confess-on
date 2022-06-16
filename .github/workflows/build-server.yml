@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: ServerCI
+name: Server Test check
 
 # Controls when the workflow will run
 on:
@@ -9,6 +9,11 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+defaults: 
+  run:
+    working-directory: server
+
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -28,7 +33,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: test the project
-        run: |
-          cd server
-          pnpm install 
-          pnpm run test
+        run: pnpm run test
