@@ -17,7 +17,7 @@ const AddPost = () => {
         console.log(values);
     };
     return (
-        <div className="p-4 md:shadow-md rounded-lg md:mt-4">
+        <div className="p-4 shadowed rounded-lg md:mt-4">
             <Formik initialValues={post} onSubmit={handleSubmit}>
                 {({ isSubmitting }) => {
                     return (

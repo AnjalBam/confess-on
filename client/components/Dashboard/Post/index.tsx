@@ -8,7 +8,7 @@ const Post:React.FC<{post: any}> = ({post}) => {
     const [isLiked, setIsLiked] = React.useState(false);
     //https://bit.ly/3tBxaL3
     return (
-        <div className="p-4 border-b-2 md:border-none shadow-none md:shadow-lg mb-3 md:rounded-lg">
+        <div className="p-4 border-b-2 md:border-none shadowed mt-4 md:rounded-lg">
             <div
                 id="post-header"
                 className="flex items-center justify-start  pb-2">
