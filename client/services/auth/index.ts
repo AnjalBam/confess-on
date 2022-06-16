@@ -4,18 +4,13 @@ import axiosInstance from "utils/axios";
 
 import { Cookies } from "react-cookie";
 import { Router } from "next/router";
+import { ResponseType } from "services/services.types";
 
 const cookies = new Cookies();
 
 class AuthenticationService {
     private axiosInstance: AxiosInstance;
-    private res: {
-        data: any;
-        message: string;
-        error: any;
-        status: number | undefined;
-        success: boolean;
-    };
+    private res: ResponseType;
     constructor() {
         this.axiosInstance = axiosInstance;
         this.res = {
