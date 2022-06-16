@@ -5,3 +5,8 @@ export type ResponseType = {
     status: number | undefined;
     success: boolean;
 };
+
+export type PostData = {
+    description: string;
+    visibility: string;
+}

@@ -1,24 +1,25 @@
 import Button from 'components/common/Button';
 import InputField from 'components/common/Input';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import React from 'react';
+import { PostData } from 'services/services.types';
+import { AddPostProps } from './AddPost.types';
 
-const AddPost = () => {
-    const [post, setPost] = React.useState({
+const AddPost:React.FC<AddPostProps> = ({addPost, isAddPostLoading}) => {
+    const initialValues: PostData = {
         description: '',
         visibility: 'public',
-    });
+    }
+    const [post, setPost] = React.useState<PostData>(initialValues);
 
-    const handleChange = (event: any) => {
-        const { name, value } = event.target;
-        setPost({ ...post, [name]: value });
-    };
-    const handleSubmit = (values: typeof post) => {
-        console.log(values);
-    };
+    const handleSubmit = async (values: PostData, actions: FormikHelpers<PostData>) => {
+        actions.resetForm();
+        await addPost(values);
+    }
+
     return (
         <div className="p-4 shadowed rounded-lg md:mt-4">
-            <Formik initialValues={post} onSubmit={handleSubmit}>
+            <Formik initialValues={post} onSubmit={handleSubmit} enableReinitialize>
                 {({ isSubmitting }) => {
                     return (
                         <Form className="flex flex-col">
@@ -43,8 +44,8 @@ const AddPost = () => {
                             </InputField>
                             <Button
                                 type="submit"
-                                isLoading={isSubmitting}
-                                disabled={isSubmitting}
+                                isLoading={isSubmitting || isAddPostLoading}
+                                disabled={isSubmitting || isAddPostLoading}
                                 className="self-end">
                                 Post
                             </Button>

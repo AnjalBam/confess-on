@@ -7,12 +7,14 @@ import Post from './Post';
 const DashboardContent: React.FC<DashboardContentProps> = ({
     posts = [],
     isLoading,
+    addPost, 
+    isPostAddLoading
 }) => {
     console.log({posts})
     return (
         <>
             <IsLoggedIn />
-            <AddPost />
+            <AddPost addPost={addPost} isAddPostLoading={isPostAddLoading} />
             {!isLoading ? (
                 <>
                     <div className="border-b-2 md:border-b-0"></div>

@@ -4,7 +4,7 @@ import axiosInstance from 'utils/axios';
 import { Cookies } from 'react-cookie';
 import { Router } from 'next/router';
 import { routes } from 'constant';
-import { ResponseType } from 'services/services.types';
+import { ResponseType, PostData } from 'services/services.types';
 
 const cookies = new Cookies();
 
@@ -64,7 +64,22 @@ class PostsService extends AuthenticatedService {
             throw error;
         }
         return this.res;
-    }
+    };
+
+    public addPost = async (postData: PostData): Promise<ResponseType> => {
+        try {
+            const response = await this.axiosInstance.post('/posts', postData);
+            this.res.message = response.data?.message;
+            this.res.data = response.data?.data;
+            this.res.error = null;
+            this.res.status = response.status;
+            this.res.success = true;
+        } catch (error: unknown) {
+            throw error;
+        }
+
+        return this.res;
+    };
 }
 
 export default PostsService;
