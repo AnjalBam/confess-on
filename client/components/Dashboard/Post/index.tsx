@@ -46,7 +46,7 @@ const Post = () => {
 
             <div id="likes-count" className='text-sm mt-2 text-slate-500 font-title'>
                 <p>
-                    {Math.floor(Math.random() * 100) + 1} people care about you.
+                    100 people care about this.
                 </p>
             </div>
 
