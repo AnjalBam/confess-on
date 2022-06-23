@@ -42,6 +42,6 @@
 .shadowed {
     box-shadow: none;
     @media screen and (min-width: 768px) {
-        box-shadow: 0 0 10px 2px rgba(43, 43, 43, 0.1);
+        box-shadow: 0 0 2px 1px rgba(43, 43, 43, 0.1);
     }
 }
