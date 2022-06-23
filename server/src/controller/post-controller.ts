@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { createPost, getAllPosts, getPostById } from '../services/post.service';
+import { likePost, unlikePost } from '../services/post.service';
 
 export const createPostController = async (req: Request, res: Response) => {
     const { body } = req;
@@ -55,7 +56,7 @@ export const getPostController = async (req: Request, res: Response) => {
     try {
         const post = await getPostById(postId);
         if (!post) {
-            return res.status(400).send({
+            return res.status(404).send({
                 message: 'Post not found.',
             });
         }
@@ -71,3 +72,48 @@ export const getPostController = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+
+export const changeLikePostController = async (req: Request, res: Response) => {
+    const { body } = req;
+    const { postId, likeStatus, user } = body;
+
+    try {
+        if (!postId) {
+            throw new Error('postId is required');
+        }
+
+        if (!likeStatus) {
+            throw new Error('likeStatus is required');
+        }
+
+        if (!user) {
+            throw new Error('Not authenticated');
+        }
+
+        if (likeStatus === 'like') {
+            const post = await likePost(postId, user.id);
+            return res.status(200).send({
+                message: 'Post liked successfully',
+                data: post,
+            });
+        } else if (likeStatus === 'unlike') {
+            const post = await unlikePost(postId, user.id);
+            return res.status(200).send({
+                message: 'Post unliked successfully',
+                data: post,
+            });
+        } else {
+            return res.status(400).send({
+                message: 'Invalid like status',
+            })
+        }
+    } catch (err: unknown) {
+        return res.status(400).send({
+            message: `Error: ${err as string}`,
+            error: err,
+        });
+    }
+};
+

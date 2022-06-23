@@ -15,7 +15,7 @@ export const validPostData = {
 
 export const generatePostData = () => ({
     ...validPostData,
-    likes: [],
+    likes: [''],
 })
 
 export const generatePostDataArray = (count = 10): unknown[] => {

@@ -1,4 +1,5 @@
 import {
+    changeLikePostController,
     createPostController,
     getAllPostsController,
     getPostController,
@@ -168,7 +169,7 @@ describe('Test Post Controllers', () => {
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.send).toHaveBeenCalledWith({
                 message: expect.any(String),
-                data: expect.any(Object)
+                data: expect.any(Object),
             });
         });
 
@@ -197,5 +198,156 @@ describe('Test Post Controllers', () => {
                 expect(res.status).toHaveBeenCalledWith(500);
             }
         });
+    });
+
+    describe('test changeLikePostController', () => {
+        it('should like the post and return 200 on success', async () => {
+            const postData = generatePostData();
+            const spyOnLikePost = jest
+                .spyOn(postService, 'likePost')
+                .mockResolvedValue(
+                    postData as unknown as PostDocument & { _id: string }
+                );
+            req = {
+                body: {
+                    likeStatus: 'like',
+                    user: {
+                        id: new mongoose.Types.ObjectId(),
+                    },
+                    postId: postData._id,
+                },
+            };
+
+            res = {
+                status: jest.fn().mockReturnThis(),
+                send: jest.fn(),
+            };
+            await changeLikePostController(req as Request, res as Response);
+
+            expect(spyOnLikePost).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.send).toHaveBeenCalled();
+        });
+
+        it('should unlike the post and return 200 on success', async () => {
+            const postData = generatePostData();
+            const userId = new mongoose.Types.ObjectId();
+            const spyOnLikePost = jest
+                .spyOn(postService, 'unlikePost')
+                .mockResolvedValue({
+                    ...postData,
+                    likes: [userId],
+                } as unknown as PostDocument & { _id: string });
+            req = {
+                body: {
+                    likeStatus: 'unlike',
+                    user: {
+                        id: userId,
+                    },
+                    postId: postData._id,
+                },
+            };
+
+            res = {
+                status: jest.fn().mockReturnThis(),
+                send: jest.fn(),
+            };
+            await changeLikePostController(req as Request, res as Response);
+
+            expect(spyOnLikePost).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.send).toHaveBeenCalled();
+        });
+
+        it('should return 400 and message if invalid likeStatus is sent', async () => {
+            const post = generatePostData();
+
+            req = {
+                body: {
+                    likeStatus: 'invalid',
+                    user: {
+                        id: new mongoose.Types.ObjectId(),
+                    },
+                    postId: post._id,
+                },
+            };
+            res = {
+                status: jest.fn().mockReturnThis(),
+                send: jest.fn(),
+            };
+
+            await changeLikePostController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.send).toHaveBeenCalledWith({
+                message: expect.any(String),
+            });
+        });
+
+        it('should send 400 error if any postId is missing', async () => {
+            req = {
+                body: {
+                    likeStatus: 'like',
+                    user: {
+                        id: new mongoose.Types.ObjectId(),
+                    },
+                },
+            };
+            res = {
+                status: jest.fn().mockReturnThis(),
+                send: jest.fn(),
+            }
+
+            await changeLikePostController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.send).toHaveBeenCalled();
+        });
+        
+        it('should send 400 error if no user found in body', async () => {
+            const postData = generatePostData();
+
+            req = {
+                body: {
+                    postId: postData._id,
+                    likeStatus: 'like',
+                }
+            }
+
+            res = {
+                status: jest.fn().mockReturnThis(),
+                send: jest.fn(),
+            }
+
+            await changeLikePostController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.send).toHaveBeenCalled();
+        })
+
+        it('should send 400 error if no likeStatus is sent in params', async () => {
+            const postData = generatePostData();
+
+            req = {
+                body: {
+                    user: {
+                        id: new mongoose.Types.ObjectId(),
+                    },
+                    postId: postData._id,
+                }
+            }
+
+            res = {
+                status: jest.fn().mockReturnThis(),
+                send: jest.fn(),
+            }
+
+            await changeLikePostController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.send).toHaveBeenCalled();
+        })
+
+
     });
 });

@@ -41,3 +41,37 @@ export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
         throw new Error(err as string);
     }
 };
+
+export const likePost = async (postId: string | mongoose.Types.ObjectId, userId: string | mongoose.Types.ObjectId) => {
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            throw new Error('Post not found');
+        }
+        if (post.likes.includes(userId.toString())) {
+            throw new Error('You already liked this post');
+        }
+        post.likes.push(userId.toString());
+        await post.save();
+        return post;
+    } catch (err) {
+        throw new Error(err as string);
+    }
+}
+
+export const unlikePost = async (postId: string | mongoose.Types.ObjectId, userId: string | mongoose.Types.ObjectId) => {
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            throw new Error('Post not found');
+        }
+        if (!post.likes.includes(userId.toString())) {
+            throw new Error('You have not liked this post');
+        }
+        post.likes = post.likes.filter(id => id !== userId.toString());
+        await post.save();
+        return post;
+    } catch (err) {
+        throw new Error(err as string);
+    }
+}

@@ -1,11 +1,12 @@
 import { Query, Types } from 'mongoose';
 import Post, { PostDocument } from '../../models/post.model';
 import {
+    generatePostData,
     generatePostDataArray,
     validPostData,
     validPostInput,
 } from '../../test/fixtures';
-import { createPost, getPostById, getPost, getAllPosts } from '../post.service';
+import { createPost, getPostById, getPost, getAllPosts, likePost } from '../post.service';
 
 describe('TEST POST SERVICE', () => {
     describe('test post create', () => {
@@ -149,13 +150,13 @@ describe('TEST POST SERVICE', () => {
                     >
                 );
 
-                try {
-                    const posts = await getAllPosts();
-                    expect(spyOnFind).toHaveBeenCalledTimes(1);
-                    expect(posts.length).toBe(10);
-                } catch (err) {
-                    expect(err).toBeUndefined();
-                }
+            try {
+                const posts = await getAllPosts();
+                expect(spyOnFind).toHaveBeenCalledTimes(1);
+                expect(posts.length).toBe(10);
+            } catch (err) {
+                expect(err).toBeUndefined();
+            }
         });
 
         it('should throw error if any occur', async () => {

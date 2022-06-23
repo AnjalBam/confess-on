@@ -4,7 +4,7 @@ export interface PostDocument extends Document {
     description: string;
     visibility: string;
     user: string;
-    likes: [string];
+    likes: string[];
     createdAt: string;
     modifiedAt: string;
 }
