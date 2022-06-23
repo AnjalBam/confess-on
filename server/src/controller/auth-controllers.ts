@@ -77,11 +77,11 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = signJwtForUser(user);
-        const { email: userEmail, username } = user;
+        const { email: userEmail, username, _id } = user;
 
         return res.status(200).send({
             message: 'Login Successful',
-            data: { token, email: userEmail, username },
+            data: { token, email: userEmail, username, id: _id },
         });
     } catch (err: unknown) {
         return res.status(500).send({
