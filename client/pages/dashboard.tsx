@@ -23,6 +23,7 @@ const Dashboard: NextPage = () => {
                 toast.error(error.message || error.toString());
             }
             if(data?.success) {
+                console.log(data.data)
                 setData(data.data);
                 toast.success(data.message);
             }
