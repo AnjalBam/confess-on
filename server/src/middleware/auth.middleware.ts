@@ -7,6 +7,8 @@ export const isAuthenticated = (
     next: NextFunction
 ) => {
     const bearerToken = req.header('Authorization');
+
+    console.log({bearerToken});
     if (!bearerToken) {
         return res.status(401).send({
             message: 'You are not authorized.',

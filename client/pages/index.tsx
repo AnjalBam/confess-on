@@ -38,9 +38,11 @@ const Home: NextPage = () => {
             </Head>
             <main>
                 {!isLoggedIn ? (
+                    <>
                     <Link href={routes.login}>
                         <Button>Login</Button>
                     </Link>
+                    <Link href={'/dashboard'}> Dashboard </Link></>
                 ) : (
                     <Button
                         onClick={() => {

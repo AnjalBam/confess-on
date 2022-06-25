@@ -1,18 +1,18 @@
-import Login from "components/Login";
-import { NextPage } from "next";
-import Head from "next/head";
+import Login from 'components/Login';
+import { NextPage } from 'next';
+import Head from 'next/head';
 
-import AuthenticationService from "services/auth";
-import { useRouter } from "next/router";
-import useUser from "hooks/useUser";
-import toast from "react-hot-toast";
+import AuthenticationService from 'services/auth';
+import { useRouter } from 'next/router';
+import useUser from 'hooks/useUser';
+import toast from 'react-hot-toast';
 
-import { loginInitialData } from "constant";
+import { loginInitialData } from 'constant';
 
-import { Cookies } from "react-cookie";
-import React from "react";
-import useQuery from "hooks/useQuery";
-import { AuthContext } from "context/auth-context";
+import { Cookies } from 'react-cookie';
+import React from 'react';
+import useQuery from 'hooks/useQuery';
+import { AuthContext } from 'context/auth-context';
 
 const cookies = new Cookies();
 
@@ -23,12 +23,12 @@ const LoginPage: NextPage = () => {
     const nextRedirectUrl: string | undefined = router.query.next?.toString();
 
     // const { isLoggedIn } = useUser();
-    const {isLoggedIn, setIsLoggedIn} = React.useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn } = React.useContext(AuthContext);
     const { dispatchRequest } = useQuery();
 
     if (isLoggedIn) {
-        toast.success("You are already logged in!");
-        router.push(nextRedirectUrl || "/");
+        toast.success('You are already logged in!');
+        router.push(nextRedirectUrl || '/');
     }
 
     const handleSubmit = async (values: typeof loginInitialData) => {
@@ -47,15 +47,18 @@ const LoginPage: NextPage = () => {
         }
 
         const { message, data: userData } = data;
-        
-        if (userData?.token) {
-            cookies.set("token", userData.token, { path: "/" });
+
+        const { token, ...restData } = userData;
+
+        if (token) {
+            cookies.set('userData', restData, { path: '/' });
+            cookies.set('token', token, { path: '/' });
             setIsLoggedIn(true);
             toast.success(message + ` as ${userData?.username}`);
-            router.push(nextRedirectUrl || "/");
+            router.push(nextRedirectUrl || '/');
             return;
         }
-        toast.error("Some error occurred. Please try again.");
+        toast.error('Some error occurred. Please try again.');
     };
     return (
         <div>
