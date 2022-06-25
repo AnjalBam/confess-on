@@ -38,7 +38,13 @@ export const createPostController = async (req: Request, res: Response) => {
 
 export const getAllPostsController = async (req: Request, res: Response) => {
     try {
-        const posts = await getAllPosts();
+        const p = await getAllPosts();
+        const posts = p.map(post => {
+            if (post.visibility === 'anonymous') {
+                post.user = 'anonymous';
+            }
+            return post;
+        })
         res.status(200).send({
             message: 'Posts fetched successfully',
             data: posts,

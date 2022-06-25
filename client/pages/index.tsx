@@ -41,17 +41,19 @@ const Home: NextPage = () => {
                         <Link href={routes.login}>
                             <Button>Login</Button>
                         </Link>
-                        <Link href={'/dashboard'}> Dashboard </Link>
                     </>
                 ) : (
-                    <Button
-                        onClick={() => {
-                            new AuthenticationService().logout();
-                            toast.success('Logged out successfully');
-                            revalidate();
-                        }}>
-                        Logout
-                    </Button>
+                    <>
+                        <Button
+                            onClick={() => {
+                                new AuthenticationService().logout();
+                                toast.success('Logged out successfully');
+                                revalidate();
+                            }}>
+                            Logout
+                        </Button>
+                        <Link href={'/dashboard'}> Dashboard </Link>
+                    </>
                 )}
 
                 <Button isLoading={isLoading} onClick={fetchData}>
