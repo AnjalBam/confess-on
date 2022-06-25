@@ -1,17 +1,18 @@
-import { routes } from "constant/routes";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import Button from "../components/common/Button";
-import styles from "../styles/Home.module.scss";
-import axios from "utils/axios";
+import { routes } from 'constant/routes';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import Button from '../components/common/Button';
+import styles from '../styles/Home.module.scss';
+import axios from 'utils/axios';
 
-import { Cookies } from "react-cookie";
-import useUser from "hooks/useUser";
-import { useRouter } from "next/router";
-import AuthenticationService from "services/auth";
+import { Cookies } from 'react-cookie';
+import useUser from 'hooks/useUser';
+import { useRouter } from 'next/router';
+import AuthenticationService from 'services/auth';
+import { AuthenticatedService } from 'services';
 
 const cookies = new Cookies();
 
@@ -21,10 +22,8 @@ const Home: NextPage = () => {
     const { isLoggedIn, revalidate } = useUser();
     const fetchData = async () => {
         try {
-            const { data } = await axios.get("/connection-test/");
-            console.log(data);
-            toast.success(data.message);
-            return data;
+            const res = await new AuthenticatedService().testConnection();
+            toast.success(JSON.stringify(res));
         } catch (error: any) {
             console.log(error);
             toast.error(error.message || error.toString());
@@ -39,27 +38,24 @@ const Home: NextPage = () => {
             <main>
                 {!isLoggedIn ? (
                     <>
-                    <Link href={routes.login}>
-                        <Button>Login</Button>
-                    </Link>
-                    <Link href={'/dashboard'}> Dashboard </Link></>
+                        <Link href={routes.login}>
+                            <Button>Login</Button>
+                        </Link>
+                        <Link href={'/dashboard'}> Dashboard </Link>
+                    </>
                 ) : (
                     <Button
                         onClick={() => {
                             new AuthenticationService().logout();
-                            toast.success("Logged out successfully");
-                            revalidate()
-                        }}
-                    >
+                            toast.success('Logged out successfully');
+                            revalidate();
+                        }}>
                         Logout
                     </Button>
                 )}
 
-                <Button
-                    isLoading={isLoading}
-                    onClick={revalidate}
-                >
-                    revalidate
+                <Button isLoading={isLoading} onClick={fetchData}>
+                    Test Connection
                 </Button>
             </main>
         </div>
