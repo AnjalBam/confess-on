@@ -78,7 +78,7 @@ export const getPostController = async (req: Request, res: Response) => {
 export const changeLikePostController = async (req: Request, res: Response) => {
     const { body } = req;
     const { postId, likeStatus, user } = body;
-
+    
     try {
         if (!postId) {
             throw new Error('postId is required');

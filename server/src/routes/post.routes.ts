@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+    changeLikePostController,
     createPostController,
     getAllPostsController,
     getPostController,
@@ -13,5 +14,7 @@ router.use(isAuthenticated);
 router.route('/').get(getAllPostsController).post(createPostController);
 
 router.route('/p/:id').get(getPostController)
+
+router.patch('/p/like', changeLikePostController);
 
 export default router;

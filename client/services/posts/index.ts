@@ -39,7 +39,9 @@ export class AuthenticatedService {
             error => {
                 if (!error.response) return error;
 
-                if (error.response.status === '401' || '403') {
+                console.log(error.response.status);
+
+                if (error.response.status == 401 || 403) {
                     console.log('Unauthorized');
                     cookies.remove('token');
                     window.location.replace(routes.login);
@@ -80,6 +82,40 @@ class PostsService extends AuthenticatedService {
 
         return this.res;
     };
+
+    public likePost = async (postId: string): Promise<ResponseType> => {
+        try {
+            const response = await this.axiosInstance.patch('/posts/p/like', {
+                postId,
+                likeStatus: 'like',
+            })
+            this.res.message = response.data?.message;
+            this.res.data = response.data?.data;
+            this.res.error = null;  
+            this.res.status = response.status;
+            this.res.success = true;
+        } catch (error: unknown) {
+            throw error;
+        }
+        return this.res;
+    }
+
+    public unlikePost = async (postId: string): Promise<ResponseType> => {
+        try {
+            const response = await this.axiosInstance.patch('/posts/p/like', {
+                postId,
+                likeStatus: 'unlike',
+            })
+            this.res.message = response.data?.message;
+            this.res.data = response.data?.data;
+            this.res.error = null;  
+            this.res.status = response.status;
+            this.res.success = true;
+        } catch (error: unknown) {
+            throw error;
+        }
+        return this.res;
+    }
 }
 
 export default PostsService;
