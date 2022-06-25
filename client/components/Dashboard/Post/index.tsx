@@ -90,7 +90,7 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
                     <div className="text-sm font-bold ml-2">
                         <Link href="#">
                             <a className="text-slate-800 font-title text-base">
-                                {post.user?.fullName}
+                                {post.user?.fullName || "Anonymous"}
                             </a>
                         </Link>
                         <p className="text-sm text-slate-400 font-normal">
