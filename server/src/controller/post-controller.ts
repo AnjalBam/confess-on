@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { createPost, getAllPosts, getPostById } from '../services/post.service';
 import { likePost, unlikePost } from '../services/post.service';
+import { encryptData } from '../utils/cryptography';
 
 export const createPostController = async (req: Request, res: Response) => {
     const { body } = req;
@@ -19,8 +20,9 @@ export const createPostController = async (req: Request, res: Response) => {
     }
 
     try {
+        const desc = encryptData(description, user.id)
         const post = await createPost({
-            description,
+            description: desc,
             visibility,
             user: user.id,
         });
