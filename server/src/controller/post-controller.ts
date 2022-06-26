@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { createPost, getAllPosts, getPostById } from '../services/post.service';
 import { likePost, unlikePost } from '../services/post.service';
-import { encryptData } from '../utils/cryptography';
+import { decryptData, encryptData } from '../utils/cryptography';
 
 export const createPostController = async (req: Request, res: Response) => {
     const { body } = req;
@@ -20,7 +20,7 @@ export const createPostController = async (req: Request, res: Response) => {
     }
 
     try {
-        const desc = encryptData(description, user.id)
+        const desc = encryptData(description, user?.id?.toString())
         const post = await createPost({
             description: desc,
             visibility,
@@ -45,6 +45,8 @@ export const getAllPostsController = async (req: Request, res: Response) => {
             if (post.visibility === 'anonymous') {
                 post.user = 'anonymous';
             }
+            console.log(req.body.user.id)
+            post.description = decryptData(post.description, req.body?.user?.id?.toString())
             return post;
         })
         res.status(200).send({
