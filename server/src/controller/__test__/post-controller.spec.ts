@@ -13,6 +13,7 @@ import {
 } from '../../test/fixtures';
 import mongoose from 'mongoose';
 import { PostDocument } from '../../models/post.model';
+import * as cryptography from '../../utils/cryptography';
 
 describe('Test Post Controllers', () => {
     let req: Partial<Request>;
@@ -34,6 +35,7 @@ describe('Test Post Controllers', () => {
                 },
             };
             const postData = generatePostData();
+            const spyOnEncryptData = jest.spyOn(cryptography, 'encryptData').mockReturnValueOnce(postData.description);
             const spyOnCreatePost = jest
                 .spyOn(postService, 'createPost')
                 .mockResolvedValue(
@@ -42,6 +44,7 @@ describe('Test Post Controllers', () => {
             await createPostController(req as Request, res as Response);
 
             expect(spyOnCreatePost).toHaveBeenCalled();
+            expect(spyOnEncryptData).toHaveBeenCalled()
             expect(res.send).toHaveBeenCalled();
             expect(res.send).toHaveBeenCalledWith({
                 message: expect.any(String),

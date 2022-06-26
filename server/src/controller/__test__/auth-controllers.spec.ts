@@ -126,6 +126,7 @@ describe('Test Auth controller', () => {
                 expect(body.data).toStrictEqual({
                     token: expect.any(String),
                     username: signUpData.username,
+                    id: expect.any(String),
                     email: signUpData.email,
                 });
             });
