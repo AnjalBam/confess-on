@@ -69,7 +69,6 @@ export const unlikePost = async (postId: string | mongoose.Types.ObjectId, userI
             throw new Error('You have not liked this post');
         }
         post.likes = post.likes.filter(id => id.toString() !== userId.toString());
-        console.log('postLikes', post.likes)
         await post.save();
         return post;
     } catch (err) {
