@@ -155,15 +155,27 @@ describe('TEST POST SERVICE', () => {
         it('should fetch all the posts by default', async () => {
             const spyOnFind = jest
                 .spyOn(Post, 'find')
-                .mockReturnValue({
-                    ...generatePostDataArray()
-                } as unknown as Query<
-                    unknown[],
-                    unknown,
-                    object,
-                    PostDocument
-                >);
-                
+                .mockImplementationOnce(() => {
+                    return {
+                        lean: jest.fn().mockReturnThis(),
+                        populate: jest
+                            .fn()
+                            .mockReturnValue(
+                                generatePostDataArray() as unknown as Query<
+                                    unknown[],
+                                    unknown,
+                                    object,
+                                    PostDocument
+                                >
+                            ),
+                    } as unknown as Query<
+                        unknown[],
+                        unknown,
+                        object,
+                        PostDocument
+                    >;
+                });
+
             try {
                 const posts = await getAllPosts();
                 expect(spyOnFind).toHaveBeenCalledTimes(1);
@@ -174,31 +186,48 @@ describe('TEST POST SERVICE', () => {
         });
 
         it('should throw error if any occur', async () => {
-            // const spyOnFind = jest
-            //     .spyOn(Post, 'find')
-            //     .mockRejectedValueOnce('Error Occurred spyOnFind');
-            // try {
-            //     const posts = await getAllPosts();
-            //     expect(posts).toBeUndefined();
-            //     expect(posts).toThrowError('Error Occurred spyOnFind');
-            //     expect(spyOnFind).toHaveBeenCalled();
-            // } catch (err: unknown) {
-            //     expect(err).toBeDefined();
-            //     expect(err).toBeInstanceOf(Error);
-            // }
+            const spyOnFind = jest
+                .spyOn(Post, 'find')
+                .mockImplementationOnce(() => {
+                    return {
+                        lean: jest.fn().mockReturnThis(),
+                        populate: jest.fn().mockRejectedValue('Error Occurred'),
+                    } as unknown as Query<unknown[], unknown, object, PostDocument>;
+                })
+            try {
+                const posts = await getAllPosts();
+                expect(posts).toBeUndefined();
+                expect(posts).toThrowError('Error Occurred spyOnFind --throw');
+                expect(spyOnFind).toHaveBeenCalled();
+            } catch (err: unknown) {
+                expect(err).toBeDefined();
+                expect(err).toBeInstanceOf(Error);
+            }
         });
 
         it('should fetch all the posts by filter if passed any', async () => {
             const spyOnFind = jest
                 .spyOn(Post, 'find')
-                .mockReturnValue(
-                    generatePostDataArray() as unknown as Query<
+                .mockImplementationOnce(() => {
+                    return {
+                        lean: jest.fn().mockReturnThis(),
+                        populate: jest
+                            .fn()
+                            .mockReturnValue(
+                                generatePostDataArray() as unknown as Query<
+                                    unknown[],
+                                    unknown,
+                                    object,
+                                    PostDocument
+                                >
+                            ),
+                    } as unknown as Query<
                         unknown[],
                         unknown,
                         object,
                         PostDocument
-                    >
-                );
+                    >;
+                });
 
             try {
                 const filter = {
@@ -206,7 +235,7 @@ describe('TEST POST SERVICE', () => {
                 };
                 const posts = await getAllPosts(filter);
                 expect(spyOnFind).toHaveBeenCalled();
-                expect(spyOnFind).toHaveBeenCalledWith(filter);
+                expect(spyOnFind).toHaveBeenCalledWith({...filter, visibility: expect.anything()});
                 expect(posts.length).toBe(10);
             } catch (err) {
                 expect(err).toBeUndefined();
