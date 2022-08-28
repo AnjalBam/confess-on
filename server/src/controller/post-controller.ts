@@ -20,7 +20,7 @@ export const createPostController = async (req: Request, res: Response) => {
     }
 
     try {
-        const desc = encryptData(description, user?.id?.toString())
+        const desc = encryptData(description, user?.id?.toString());
         const post = await createPost({
             description: desc,
             visibility,
@@ -42,18 +42,26 @@ export const getAllPostsController = async (req: Request, res: Response) => {
     try {
         const p = await getAllPosts();
         const posts = p.map(post => {
+            try {
+                post.description = decryptData(
+                    post.description,
+                    post.user.toString()
+                );
+            } catch (err) {
+                throw new Error(`Decryption Failed: ${err}`);
+            }
+
             if (post.visibility === 'anonymous') {
                 post.user = 'anonymous';
             }
-            console.log(req.body.user.id)
-            post.description = decryptData(post.description, req.body?.user?.id?.toString())
             return post;
-        })
+        });
         res.status(200).send({
             message: 'Posts fetched successfully',
             data: posts,
         });
     } catch (err: unknown) {
+        console.log({ err });
         return res.status(500).send({
             message: 'Some error occurred. Try Again.',
             error: err,
@@ -83,12 +91,10 @@ export const getPostController = async (req: Request, res: Response) => {
     }
 };
 
-
-
 export const changeLikePostController = async (req: Request, res: Response) => {
     const { body } = req;
     const { postId, likeStatus, user } = body;
-    
+
     try {
         if (!postId) {
             throw new Error('postId is required');
@@ -117,7 +123,7 @@ export const changeLikePostController = async (req: Request, res: Response) => {
         } else {
             return res.status(400).send({
                 message: 'Invalid like status',
-            })
+            });
         }
     } catch (err: unknown) {
         return res.status(400).send({
@@ -126,4 +132,3 @@ export const changeLikePostController = async (req: Request, res: Response) => {
         });
     }
 };
-

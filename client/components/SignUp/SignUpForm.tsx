@@ -75,7 +75,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ handleSubmit }) => {
                         isLoading={isSubmitting}
                         disabled={!isValid}
                     >
-                        {isSubmitting ? "Signing in..." : "SignUp"}
+                        {isSubmitting ? "Signing in..." : "Register"}
                     </Button>
                 </Form>
             )}

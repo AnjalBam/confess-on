@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import {encryptData, decryptData} from '../../utils/cryptography'
 
 export const validPostInput = {
     description: 'Test Post',
@@ -21,7 +22,10 @@ export const generatePostData = () => ({
 export const generatePostDataArray = (count = 10): unknown[] => {
     const result: unknown[] = [];
     for (let i = 0; i < count; i++) {
-        result.push(generatePostData());
+        const data = generatePostData();
+        data.description = encryptData(data.description, data.user.toString())
+        result.push(data);
     }
+    console.log({result})
     return result;
 }
