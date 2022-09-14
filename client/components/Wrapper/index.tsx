@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Wrapper: React.FC<{ children: React.ReactNode; className?: string }> = ({
     children,
@@ -6,8 +6,7 @@ const Wrapper: React.FC<{ children: React.ReactNode; className?: string }> = ({
 }) => {
     return (
         <div
-            className={`xl:container lg:container md:container sm:container mx-auto ${className}`}
-        >
+            className={`xl:container lg:container md:container sm:container mx-auto ${className}`}>
             {children}
         </div>
     );

@@ -1,10 +1,10 @@
-import { AxiosError, AxiosInstance } from "axios";
-import { initialSignupData, loginInitialData } from "constant";
-import axiosInstance from "utils/axios";
+import { AxiosError, AxiosInstance } from 'axios';
+import { initialSignupData, loginInitialData } from 'constant';
+import axiosInstance from 'utils/axios';
 
-import { Cookies } from "react-cookie";
-import { Router } from "next/router";
-import { ResponseType } from "services/services.types";
+import { Cookies } from 'react-cookie';
+import { Router } from 'next/router';
+import { ResponseType } from 'services/services.types';
 
 const cookies = new Cookies();
 
@@ -16,7 +16,7 @@ class AuthenticationService {
         this.res = {
             data: null,
             error: null,
-            message: "",
+            message: '',
             status: undefined,
             success: false,
         };
@@ -27,7 +27,7 @@ class AuthenticationService {
     ): Promise<typeof this.res> => {
         try {
             const response = await this.axiosInstance.post(
-                "/auth/login",
+                '/auth/login',
                 credentials
             );
             this.res.message = response.data?.message;
@@ -46,7 +46,7 @@ class AuthenticationService {
     ): Promise<typeof this.res> => {
         try {
             const response = await this.axiosInstance.post(
-                "/auth/signup",
+                '/auth/signup',
                 signUpData
             );
             this.res.message = response.data?.message;
@@ -62,10 +62,10 @@ class AuthenticationService {
 
     public logout = (): typeof this.res => {
         try {
-            cookies.remove("token");
+            cookies.remove('token');
             return {
                 data: {},
-                message: "Logged out successfully.",
+                message: 'Logged out successfully.',
                 error: null,
                 success: true,
                 status: 200,

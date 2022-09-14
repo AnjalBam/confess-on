@@ -1,11 +1,11 @@
-import React from "react";
-import { IconProps } from "./Icons.types";
+import React from 'react';
+import { IconProps } from './Icons.types';
 
 const Logo: React.FC<IconProps> = ({
     height = 40,
     width = 40,
-    color = "#434343",
-    className = "",
+    color = '#434343',
+    className = '',
 }) => {
     return (
         <svg
@@ -14,8 +14,7 @@ const Logo: React.FC<IconProps> = ({
             viewBox="0 0 49 79"
             fill="none"
             className={className}
-            xmlns="http://www.w3.org/2000/svg"
-        >
+            xmlns="http://www.w3.org/2000/svg">
             <rect
                 x="21.0802"
                 y="44.0669"

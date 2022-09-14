@@ -1,4 +1,4 @@
-import { PostData } from "services/services.types";
+import { PostData } from 'services/services.types';
 
 export type DashboardContentProps = {
     className?: string;

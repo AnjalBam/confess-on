@@ -1,33 +1,34 @@
 version: "3.9"
 
 services:
-  db:
+  prod_db:
     image: mongo
     ports:
       - "27017:27017"
     volumes:
-      - ./db/mongo:/etc/mongo
-    
-  server: 
+      - ./db/mongo-prod:/etc/mongo
+  
+  prod_server:
     build:
       context: ./server
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
+
     ports:
       - "4000:4000"
-    volumes:
-      - ./server:/app/server
+    
     env_file:
       - ./server/.env
+
     depends_on:
-      - db
-    
-  client:
+      - prod_db
+  
+  prod_client:
     build:
       context: ./client
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
+
     ports:
       - "3000:3000"
-    volumes:
-      - ./client:/app/client
+
     depends_on:
-      - server
+      - prod_server

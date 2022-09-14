@@ -5,6 +5,6 @@ describe('Testing login feature', () => {
         it('should contain login as title', () => {
             cy.visit('/auth/login');
             cy.title().should('include', 'Login');
-        })
-    })
-})
+        });
+    });
+});

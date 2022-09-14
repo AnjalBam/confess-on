@@ -39,13 +39,20 @@ export class AuthenticatedService {
             error => {
                 if (!error.response) return Promise.reject(error);
 
-                if (error.response.statusText.toLowerCase().includes('unauthorized') || error.response.statusText.toLowerCase().includes('forbidden')) {
+                if (
+                    error.response.statusText
+                        .toLowerCase()
+                        .includes('unauthorized') ||
+                    error.response.statusText
+                        .toLowerCase()
+                        .includes('forbidden')
+                ) {
                     console.log('Unauthorized');
                     cookies.remove('token');
                     window.location.replace(routes.login);
                 }
 
-                return  Promise.reject(error);
+                return Promise.reject(error);
             }
         );
     };
@@ -62,5 +69,5 @@ export class AuthenticatedService {
             throw error;
         }
         return this.res;
-    }
+    };
 }

@@ -4,8 +4,8 @@ import { FC } from 'react';
 const InputField: FC<FieldAttributes<any>> = ({
     name,
     label = '',
-    className='',
-    validate=true,
+    className = '',
+    validate = true,
     ...rest
 }) => {
     const [field, meta, helpers] = useField(name);
@@ -19,7 +19,8 @@ const InputField: FC<FieldAttributes<any>> = ({
             )}
             <Field
                 className={`px-4 py-2 w-full rounded-lg shadow-sm ${
-                    validate && meta.touched &&
+                    validate &&
+                    meta.touched &&
                     (meta.error
                         ? 'border-2 border-red-300'
                         : 'border-2 border-green-300')

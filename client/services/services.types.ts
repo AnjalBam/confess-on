@@ -9,4 +9,4 @@ export type ResponseType = {
 export type PostData = {
     description: string;
     visibility: string;
-}
+};
