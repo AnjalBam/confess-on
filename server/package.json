@@ -1,6 +1,7 @@
 {
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "start": "npm run build && node dist/index.js",
     "dev": "nodemon index.ts",
     "lint": "eslint . --ext .ts",
     "test": "jest --config jest.config.js",
