@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
-import { object, string, ref } from 'yup';
+import { Formik, Form } from 'formik';
+import { object, string } from 'yup';
 
 import InputField from 'components/common/Input';
 import Button from 'components/common/Button';
@@ -72,14 +72,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ handleSubmit }) => {
                     <Button
                         type="submit"
                         isLoading={isSubmitting}
-<<<<<<< HEAD
                         disabled={!isValid}
                     >
                         {isSubmitting ? "Signing in..." : "Register"}
-=======
-                        disabled={!isValid}>
-                        {isSubmitting ? 'Signing in...' : 'SignUp'}
->>>>>>> eab8cc80a0da275dd3b4333fb4fd7a7a35cc9445
                     </Button>
                 </Form>
             )}
