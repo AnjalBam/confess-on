@@ -5,21 +5,27 @@ import React from 'react';
 import { PostData } from 'services/services.types';
 import { AddPostProps } from './AddPost.types';
 
-const AddPost:React.FC<AddPostProps> = ({addPost, isAddPostLoading}) => {
+const AddPost: React.FC<AddPostProps> = ({ addPost, isAddPostLoading }) => {
     const initialValues: PostData = {
         description: '',
         visibility: 'public',
-    }
+    };
     const [post, setPost] = React.useState<PostData>(initialValues);
 
-    const handleSubmit = async (values: PostData, actions: FormikHelpers<PostData>) => {
+    const handleSubmit = async (
+        values: PostData,
+        actions: FormikHelpers<PostData>
+    ) => {
         actions.resetForm();
         await addPost(values);
-    }
+    };
 
     return (
         <div className="p-4 shadowed rounded-lg md:mt-4">
-            <Formik initialValues={post} onSubmit={handleSubmit} enableReinitialize>
+            <Formik
+                initialValues={post}
+                onSubmit={handleSubmit}
+                enableReinitialize>
                 {({ isSubmitting }) => {
                     return (
                         <Form className="flex flex-col">
@@ -29,7 +35,9 @@ const AddPost:React.FC<AddPostProps> = ({addPost, isAddPostLoading}) => {
                                     name="description"
                                     validate={false}
                                     placeholder="What are you thinking?"
-                                    className={'h-32 text-slate-500 bg-light border-2 rounded-lg border-slate-100'}
+                                    className={
+                                        'h-32 text-slate-500 bg-light border-2 rounded-lg border-slate-100'
+                                    }
                                     required
                                 />
                             </div>

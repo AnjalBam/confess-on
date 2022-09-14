@@ -1,36 +1,35 @@
-import React from "react";
-import { Field, Formik, Form } from "formik";
-import { object, string, ref } from "yup";
+import React from 'react';
+import { Field, Formik, Form } from 'formik';
+import { object, string, ref } from 'yup';
 
-import InputField from "components/common/Input";
-import Button from "components/common/Button";
+import InputField from 'components/common/Input';
+import Button from 'components/common/Button';
 
-import { loginInitialData as initialValues } from "constant";
-import { SignUpFormProps } from "./SignUp.types";
+import { loginInitialData as initialValues } from 'constant';
+import { SignUpFormProps } from './SignUp.types';
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ handleSubmit }) => {
     const signUpFormSchema = object().shape({
-        fullName: string().required("Full name is required"),
-        email: string().email("Invalid email.").required("Email is required."),
+        fullName: string().required('Full name is required'),
+        email: string().email('Invalid email.').required('Email is required.'),
         password: string()
-            .required("Password is required.")
-            .min(8, "Password must be at least 8 characters."),
+            .required('Password is required.')
+            .min(8, 'Password must be at least 8 characters.'),
         bio: string(),
         confirmPassword: string()
-            .required("Password is required.")
-            .min(8, "Password must be at least 8 characters.")
-            .test("passwords-match", "Passwords must match", function (value) {
+            .required('Password is required.')
+            .min(8, 'Password must be at least 8 characters.')
+            .test('passwords-match', 'Passwords must match', function (value) {
                 return this.parent.password === value;
             }),
-        username: string().required("Username is required."),
+        username: string().required('Username is required.'),
     });
 
     return (
         <Formik
             onSubmit={handleSubmit}
             initialValues={initialValues}
-            validationSchema={signUpFormSchema}
-        >
+            validationSchema={signUpFormSchema}>
             {({ isSubmitting, isValid }) => (
                 <Form>
                     <InputField
@@ -73,9 +72,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ handleSubmit }) => {
                     <Button
                         type="submit"
                         isLoading={isSubmitting}
-                        disabled={!isValid}
-                    >
-                        {isSubmitting ? "Signing in..." : "SignUp"}
+                        disabled={!isValid}>
+                        {isSubmitting ? 'Signing in...' : 'SignUp'}
                     </Button>
                 </Form>
             )}

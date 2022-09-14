@@ -1,12 +1,12 @@
 export const loginInitialData = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
 };
 
 export const initialSignupData = {
-    email: "",
-    password: "",
-    confirmPassword: "",
-    fullName: "",
-    bio: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: '',
+    bio: '',
 };

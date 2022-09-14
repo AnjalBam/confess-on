@@ -4,10 +4,10 @@ export type ButtonProps = {
     disabled?: boolean;
     onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     type?: 'button' | 'submit' | 'reset';
-    isLoading?: boolean
+    isLoading?: boolean;
     primary?: boolean;
     secondary?: boolean;
     success?: boolean;
     danger?: boolean;
     small?: boolean;
-}
+};
