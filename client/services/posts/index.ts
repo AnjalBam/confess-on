@@ -42,34 +42,34 @@ class PostsService extends AuthenticatedService {
             const response = await this.axiosInstance.patch('/posts/p/like', {
                 postId,
                 likeStatus: 'like',
-            })
+            });
             this.res.message = response.data?.message;
             this.res.data = response.data?.data;
-            this.res.error = null;  
+            this.res.error = null;
             this.res.status = response.status;
             this.res.success = true;
         } catch (error: unknown) {
             throw error;
         }
         return this.res;
-    }
+    };
 
     public unlikePost = async (postId: string): Promise<ResponseType> => {
         try {
             const response = await this.axiosInstance.patch('/posts/p/like', {
                 postId,
                 likeStatus: 'unlike',
-            })
+            });
             this.res.message = response.data?.message;
             this.res.data = response.data?.data;
-            this.res.error = null;  
+            this.res.error = null;
             this.res.status = response.status;
             this.res.success = true;
         } catch (error: unknown) {
             throw error;
         }
         return this.res;
-    }
+    };
 }
 
 export default PostsService;

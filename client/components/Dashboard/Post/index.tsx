@@ -44,8 +44,10 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
             }
             if (data.success) {
                 setIsLiked(false);
-                if(Array.isArray(post.likes)) {
-                    post.likes.filter((id: string) => id.toString() !== userData.id.toString());
+                if (Array.isArray(post.likes)) {
+                    post.likes.filter(
+                        (id: string) => id.toString() !== userData.id.toString()
+                    );
                 }
             }
         } else {
@@ -63,7 +65,7 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
             }
             if (_data.success) {
                 setIsLiked(true);
-                if(Array.isArray(post.likes)) {
+                if (Array.isArray(post.likes)) {
                     post.likes.push(userData.id);
                 }
             }
@@ -90,7 +92,7 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
                     <div className="text-sm font-bold ml-2">
                         <Link href="#">
                             <a className="text-slate-800 font-title text-base">
-                                {post.user?.fullName || "Anonymous"}
+                                {post.user?.fullName || 'Anonymous'}
                             </a>
                         </Link>
                         <p className="text-sm text-slate-400 font-normal">

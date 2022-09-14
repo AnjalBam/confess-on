@@ -26,7 +26,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                     </div>
                 </>
             ) : (
-                <div className='flex justify-center mt-4'>
+                <div className="flex justify-center mt-4">
                     <Loader />
                 </div>
             )}

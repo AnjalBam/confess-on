@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
 
 const useQuery = () => {
     const [isLoading, setIsLoading] = React.useState(false);
 
     const dispatchRequest = React.useCallback(
         async (
-            dispatcher: (payload?: any) => Promise<any>, payload?: any
+            dispatcher: (payload?: any) => Promise<any>,
+            payload?: any
         ): Promise<{
             data: any;
             error: any;

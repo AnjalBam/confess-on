@@ -1,27 +1,26 @@
-import React from "react";
-import { Formik, Form } from "formik";
-import { object, string } from "yup";
-import { LoginFormProps } from "./LoginForm.types";
+import React from 'react';
+import { Formik, Form } from 'formik';
+import { object, string } from 'yup';
+import { LoginFormProps } from './LoginForm.types';
 
-import InputField from "components/common/Input";
-import Button from "components/common/Button";
+import InputField from 'components/common/Input';
+import Button from 'components/common/Button';
 
-import { loginInitialData as initialValues } from "constant";
+import { loginInitialData as initialValues } from 'constant';
 
 const LoginForm: React.FC<LoginFormProps> = ({ handleSubmit }) => {
     const loginFormSchema = object().shape({
-        email: string().email("Invalid email.").required("Email is required."),
+        email: string().email('Invalid email.').required('Email is required.'),
         password: string()
-            .required("Password is required.")
-            .min(8, "Password must be at least 8 characters."),
+            .required('Password is required.')
+            .min(8, 'Password must be at least 8 characters.'),
     });
 
     return (
         <Formik
             onSubmit={handleSubmit}
             initialValues={initialValues}
-            validationSchema={loginFormSchema}
-        >
+            validationSchema={loginFormSchema}>
             {({ isSubmitting, isValid }) => (
                 <Form>
                     <InputField
@@ -39,9 +38,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleSubmit }) => {
                         type="submit"
                         isLoading={isSubmitting}
                         disabled={!isValid}
-                        className={!isValid ? "mt-2" : "mt-4"}
-                    >
-                        {isSubmitting ? "Logging in..." : "Login"}
+                        className={!isValid ? 'mt-2' : 'mt-4'}>
+                        {isSubmitting ? 'Logging in...' : 'Login'}
                     </Button>
                 </Form>
             )}

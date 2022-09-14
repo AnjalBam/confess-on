@@ -1,20 +1,20 @@
-import Login from "components/Login";
-import { NextPage } from "next";
-import Head from "next/head";
+import Login from 'components/Login';
+import { NextPage } from 'next';
+import Head from 'next/head';
 
-import AuthenticationService from "services/auth";
-import { useRouter } from "next/router";
-import useUser from "hooks/useUser";
-import toast from "react-hot-toast";
+import AuthenticationService from 'services/auth';
+import { useRouter } from 'next/router';
+import useUser from 'hooks/useUser';
+import toast from 'react-hot-toast';
 
-import { initialSignupData } from "constant";
+import { initialSignupData } from 'constant';
 
-import { Cookies } from "react-cookie";
-import React from "react";
-import useQuery from "hooks/useQuery";
+import { Cookies } from 'react-cookie';
+import React from 'react';
+import useQuery from 'hooks/useQuery';
 
-import SignUp from "components/SignUp";
-import {routes} from 'constant'
+import SignUp from 'components/SignUp';
+import { routes } from 'constant';
 
 const cookies = new Cookies();
 
@@ -30,8 +30,8 @@ const SignUpPage: NextPage = () => {
     console.log(isLoading);
 
     if (isLoggedIn) {
-        toast.success("You are already logged in!");
-        router.push(nextRedirectUrl || "/");
+        toast.success('You are already logged in!');
+        router.push(nextRedirectUrl || '/');
     }
 
     const handleSubmit = async (values: typeof initialSignupData) => {
@@ -57,7 +57,7 @@ const SignUpPage: NextPage = () => {
             router.push(routes.login);
             return;
         }
-        toast.error("Some error occurred. Please try again.");
+        toast.error('Some error occurred. Please try again.');
     };
     return (
         <div>
