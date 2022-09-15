@@ -1,4 +1,3 @@
-import Login from 'components/Login';
 import { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -9,14 +8,12 @@ import toast from 'react-hot-toast';
 
 import { initialSignupData } from 'constant';
 
-import { Cookies } from 'react-cookie';
 import React from 'react';
 import useQuery from 'hooks/useQuery';
 
 import SignUp from 'components/SignUp';
 import { routes } from 'constant';
 
-const cookies = new Cookies();
 
 const SignUpPage: NextPage = () => {
     const authService = new AuthenticationService();
@@ -25,9 +22,8 @@ const SignUpPage: NextPage = () => {
     const nextRedirectUrl: string | undefined = router.query.next?.toString();
 
     const { isLoggedIn } = useUser();
-    const { isLoading, dispatchRequest } = useQuery();
+    const { dispatchRequest } = useQuery();
 
-    console.log(isLoading);
 
     if (isLoggedIn) {
         toast.success('You are already logged in!');
@@ -35,7 +31,6 @@ const SignUpPage: NextPage = () => {
     }
 
     const handleSubmit = async (values: typeof initialSignupData) => {
-        console.log({ values });
         const { data, error } = await dispatchRequest(
             authService.signup,
             values

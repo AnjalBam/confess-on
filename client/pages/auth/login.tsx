@@ -4,7 +4,6 @@ import Head from 'next/head';
 
 import AuthenticationService from 'services/auth';
 import { useRouter } from 'next/router';
-import useUser from 'hooks/useUser';
 import toast from 'react-hot-toast';
 
 import { loginInitialData } from 'constant';

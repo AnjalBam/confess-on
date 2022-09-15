@@ -10,7 +10,7 @@ const IsLoggedIn = () => {
         if (isLoggedIn === false) {
             router.push(routes.login + '?next=' + router.pathname);
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, router]);
     return <></>;
 };
 

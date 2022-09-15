@@ -6,7 +6,7 @@ import IsLoggedIn from 'components/IsLoggedIn';
 import useQuery from 'hooks/useQuery';
 import PostsService from 'services/posts';
 import toast from 'react-hot-toast';
-import { PostData } from 'services/services.types';
+import { PostData, ResponseType } from 'services/services.types';
 
 const Dashboard: NextPage = () => {
     const { isLoading, dispatchRequest } = useQuery();
@@ -23,12 +23,11 @@ const Dashboard: NextPage = () => {
                 toast.error(error.message || error.toString());
             }
             if (data?.success) {
-                console.log(data.data);
                 setData(data.data);
                 toast.success(data.message);
             }
         })();
-    }, [refetch]);
+    }, [refetch, dispatchRequest, postService.getPosts]);
 
     const {
         isLoading: isPostAddLoading,

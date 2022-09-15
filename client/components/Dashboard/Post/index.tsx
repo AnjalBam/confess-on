@@ -26,7 +26,7 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
         if (post.likes.length > 0) {
             setIsLiked(post.likes.includes(userData.id));
         }
-    });
+    }, [post.likes, userData.id]);
 
     const toggleLikePost = async () => {
         if (isLiked) {

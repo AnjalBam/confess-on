@@ -1,7 +1,6 @@
 import React from 'react';
 import { ButtonProps } from './Button.types';
 import { Puff } from 'react-loading-icons';
-import { colors } from 'constant/colors';
 
 const Button: React.FC<ButtonProps> = ({
     children,
