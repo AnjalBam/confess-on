@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . /app/client/
 
+# RUN chown root -R /app/client/
+
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
