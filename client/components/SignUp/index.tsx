@@ -18,7 +18,7 @@ const SignUp: React.FC<SignUpProps> = ({ handleSubmit }) => {
                 </p>
             </div>
             <SignUpForm handleSubmit={handleSubmit} />
-            <Link href={routes.login} className='mt-4 text-slate-500'>
+            <Link href={routes.login} className="mt-4 text-slate-500">
                 <a href="">
                     Already have an account? <strong>LogIn</strong>
                 </a>
