@@ -20,13 +20,13 @@ const Post = new Schema<PostDocument>({
         default: 'public',
     },
     user: {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.Mixed,
         ref: 'User',
         required: true,
     },
     likes: [
         {
-            type: Schema.Types.ObjectId,
+            type: Schema.Types.Mixed,
             ref: 'User',
         },
     ],

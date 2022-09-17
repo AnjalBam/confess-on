@@ -8,5 +8,13 @@
         "no-unused-vars": "off",
         "no-undef": "error",
         "quotes": ["error", "single", { "allowTemplateLiterals": true }]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ]
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { NextPage } from 'next';
 
 import DashboardContent from 'components/Dashboard';
@@ -15,19 +15,22 @@ const Dashboard: NextPage = () => {
     const [refetch, setRefetch] = useState(false);
 
     const postService = new PostsService();
+    
+    const fetchGetData = useCallback(async () => {
+        const { data, error } = await dispatchRequest(postService.getPosts);
+        if (error) {
+            toast.error(error.message || error.toString());
+        }
+        if (data?.success) {
+            setData(data.data);
+            toast.success(data.message);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
-        (async () => {
-            const { data, error } = await dispatchRequest(postService.getPosts);
-            if (error) {
-                toast.error(error.message || error.toString());
-            }
-            if (data?.success) {
-                setData(data.data);
-                toast.success(data.message);
-            }
-        })();
-    }, [refetch, dispatchRequest, postService.getPosts]);
+        fetchGetData();
+    }, [fetchGetData]);
 
     const {
         isLoading: isPostAddLoading,
@@ -65,7 +68,7 @@ const Dashboard: NextPage = () => {
                         />
                     </div>
                     <div className="hidden md:block">
-                        <h2>Recommended section</h2>
+                        <h2>Recommended for you</h2>
                     </div>
                 </div>
             </div>

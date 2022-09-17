@@ -47,7 +47,6 @@ export class AuthenticatedService {
                         .toLowerCase()
                         .includes('forbidden')
                 ) {
-                    console.log('Unauthorized');
                     cookies.remove('token');
                     window.location.replace(routes.login);
                 }
