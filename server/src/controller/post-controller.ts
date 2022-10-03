@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { UserDocument } from '../models/user.model';
 import { createPost, getAllPosts, getPostById } from '../services/post.service';
 import { likePost, unlikePost } from '../services/post.service';
 import { decryptData, encryptData } from '../utils/cryptography';
@@ -21,6 +22,9 @@ export const createPostController = async (req: Request, res: Response) => {
 
     try {
         const desc = encryptData(description, user?.id?.toString());
+        console.log(
+            `"${desc}" encrypted with "${user?.id?.toString()}" was previously "${description}"`
+        );
         const post = await createPost({
             description: desc,
             visibility,
@@ -43,16 +47,19 @@ export const getAllPostsController = async (req: Request, res: Response) => {
         const p = await getAllPosts();
         const posts = p.map(post => {
             try {
-                post.description = decryptData(
-                    post.description,
-                    post.user.toString()
-                );
+                let id = post.user._id.toString();
+                try {
+                    let desc = decryptData(post.description, id);
+                    post.description = desc;
+                } catch (err) {
+                    throw new Error('Error while decrytption');
+                }
             } catch (err) {
                 throw new Error(`Decryption Failed: ${err}`);
             }
 
             if (post.visibility === 'anonymous') {
-                post.user = 'anonymous';
+                post.user = 'anonymous' as unknown as UserDocument;
             }
             return post;
         });

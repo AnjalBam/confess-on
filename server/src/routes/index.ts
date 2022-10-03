@@ -9,7 +9,7 @@ router.use('/auth', authRoutes);
 router.use('/posts', postRoutes);
 
 router.get('/connection-test', async (req: Request, res: Response) => {
-    // await Post.deleteMany(); 
+    // await Post.deleteMany().then(() => console.log("deleted all")); 
     res.status(200).send({
         message: 'Connection is working',
     });

@@ -1,5 +1,6 @@
 import mongoose, { FilterQuery, DocumentDefinition } from 'mongoose';
 import Post, { PostDocument } from '../models/post.model';
+import { UserDocument } from '../models/user.model';
 
 export const createPost = async (
     postData: DocumentDefinition<
@@ -35,14 +36,25 @@ export const getPost = async (filter: FilterQuery<PostDocument>) => {
 
 export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
     try {
-        const posts = await Post.find({...filter, visibility: { $in: [ "public", "anonymous"] }}).lean().populate('user', '-password -salt -createdAt -updatedAt');
+        const posts = await Post.find({
+            ...filter,
+            visibility: { $in: ['public', 'anonymous'] },
+        })
+            .lean()
+            .populate<{ user: UserDocument }>(
+                'user',
+                '-password -salt -createdAt -updatedAt'
+            );
         return posts;
     } catch (err) {
         throw new Error(err as string);
     }
 };
 
-export const likePost = async (postId: string | mongoose.Types.ObjectId, userId: string | mongoose.Types.ObjectId) => {
+export const likePost = async (
+    postId: string | mongoose.Types.ObjectId,
+    userId: string | mongoose.Types.ObjectId
+) => {
     try {
         const post = await Post.findById(postId);
         if (!post) {
@@ -57,9 +69,12 @@ export const likePost = async (postId: string | mongoose.Types.ObjectId, userId:
     } catch (err) {
         throw new Error(err as string);
     }
-}
+};
 
-export const unlikePost = async (postId: string | mongoose.Types.ObjectId, userId: string | mongoose.Types.ObjectId) => {
+export const unlikePost = async (
+    postId: string | mongoose.Types.ObjectId,
+    userId: string | mongoose.Types.ObjectId
+) => {
     try {
         const post = await Post.findById(postId);
         if (!post) {
@@ -68,10 +83,12 @@ export const unlikePost = async (postId: string | mongoose.Types.ObjectId, userI
         if (!post.likes.includes(userId.toString())) {
             throw new Error('You have not liked this post');
         }
-        post.likes = post.likes.filter(id => id.toString() !== userId.toString());
+        post.likes = post.likes.filter(
+            id => id.toString() !== userId.toString()
+        );
         await post.save();
         return post;
     } catch (err) {
         throw new Error(err as string);
     }
-}
+};
