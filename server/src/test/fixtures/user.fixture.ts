@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { UserDocument } from "../../models/user.model";
+import mongoose from 'mongoose';
 
 export const validUserData = {
     fullName: 'Test User',
@@ -11,17 +10,17 @@ export const validUserData = {
 };
 
 export const signUpData = {
-    ...validUserData, 
-    confirmPassword: validUserData.password
-}
+    ...validUserData,
+    confirmPassword: validUserData.password,
+};
 
 export const changePasswordData = {
     password: 'oldPassword',
     newPassword: 'newPassword',
-    confirmNewPassword: 'newPassword'
-}
+    confirmNewPassword: 'newPassword',
+};
 
-export const userData= {
+export const userData = {
     _id: new mongoose.Types.ObjectId(),
     fullName: 'Test User',
     email: 'test@email.com',
@@ -31,4 +30,4 @@ export const userData= {
     bio: "Test User's bio",
     createdAt: new Date(),
     updatedAt: new Date(),
-}
+};

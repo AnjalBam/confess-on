@@ -75,6 +75,5 @@ describe('Test User Model', () => {
         await user.save();
 
         expect(user.salt).toBeDefined();
-    })
-
+    });
 });

@@ -11,6 +11,7 @@ export interface UserDocument extends Document {
     createdAt: Date;
     updatedAt: Date;
     bio?: string;
+    // eslint-disable-next-line no-unused-vars
     validatePassword(password: string): boolean;
 }
 
@@ -60,12 +61,11 @@ export const UserSchema = new Schema(
 );
 
 UserSchema.pre('save', function (next) {
-    const user  = this as UserDocument;
+    const user = this as UserDocument;
 
     if (!user.isModified('password')) {
         return next();
     }
-
 
     this.salt = crypto.randomBytes(16).toString('hex');
     this.password = crypto

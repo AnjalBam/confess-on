@@ -21,7 +21,6 @@ export function encryptData(
         .update(username)
         .digest('hex')
         .substring(0, 16);
-    console.log(`${data} encrypting with "${username}"`);
     const cipher = crypto.createCipheriv(encryptionMethod, secret, encIv);
     const encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
     return Buffer.from(encrypted).toString('base64');
@@ -33,7 +32,6 @@ export function decryptData(
     encryptionMethod = encMethod,
     secret = key
 ) {
-    console.log(`${encryptedData} decrypting with "${username}"`);
     const encIv = crypto
         .createHash('sha512')
         .update(username)
@@ -43,13 +41,11 @@ export function decryptData(
     encryptedData = buff.toString('utf-8');
     const decipher = crypto.createDecipheriv(encryptionMethod, secret, encIv);
     try {
-        console.log('deciphering');
         const data =
             decipher.update(encryptedData, 'hex', 'utf8') +
             decipher.final('utf8');
         return data;
     } catch (err: unknown) {
-        console.log('err occurred');
         throw err;
     }
 }

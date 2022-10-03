@@ -30,10 +30,10 @@ describe('Test Encryption and Decryption functions', () => {
 
         it('should raise error if invalid', () => {
             try {
-                decryptData(dataToDecrypt, 'invalidUsername')
-            } catch (err: any) {
+                decryptData(dataToDecrypt, 'invalidUsername');
+            } catch (err: unknown) {
                 expect(err).toBeDefined();
             }
-        })
+        });
     });
 });

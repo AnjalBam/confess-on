@@ -1,19 +1,7 @@
-import mongoose, { Query, Types } from 'mongoose';
+import mongoose, { Query } from 'mongoose';
 import Post, { PostDocument } from '../../models/post.model';
-import {
-    generatePostData,
-    generatePostDataArray,
-    validPostData,
-    validPostInput,
-} from '../../test/fixtures';
-import {
-    createPost,
-    getPostById,
-    getPost,
-    getAllPosts,
-    likePost,
-    unlikePost,
-} from '../post.service';
+import { generatePostData } from '../../test/fixtures';
+import { likePost, unlikePost } from '../post.service';
 
 describe('Test postServices', () => {
     describe('test likePost', () => {
@@ -85,8 +73,8 @@ describe('Test postServices', () => {
         it('should throw error if any occur', async () => {
             const postId = new mongoose.Types.ObjectId();
             const userId = new mongoose.Types.ObjectId();
-            const spyOnFindById = jest.
-                spyOn(Post, 'findById')
+            const spyOnFindById = jest
+                .spyOn(Post, 'findById')
                 .mockRejectedValue(new Error('Some error occurred'));
 
             try {
@@ -98,7 +86,7 @@ describe('Test postServices', () => {
                 expect(error).toBeDefined();
                 expect(error).toBeInstanceOf(Error);
             }
-        })
+        });
     });
 
     describe('test unlikePosts', () => {
@@ -145,6 +133,6 @@ describe('Test postServices', () => {
                 expect(error).toBeDefined();
                 expect(error).toBeInstanceOf(Error);
             }
-        })
-    })
+        });
+    });
 });

@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import request from 'supertest';
 import { dropCollections, dropDatabase, setupDb } from '../../test/db/testDb';
 import { init } from '../../test/utils/app';
 import User from '../../models/user.model';
 import mongoose from 'mongoose';
 
-import {
-    signUpData,
-    changePasswordData,
-} from '../../test/fixtures/user.fixture';
-
-import {changePassword} from '../auth-controllers'
+import { signUpData } from '../../test/fixtures/user.fixture';
 
 const app = init();
 

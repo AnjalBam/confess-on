@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
     changeLikePostController,
     createPostController,
@@ -35,7 +36,9 @@ describe('Test Post Controllers', () => {
                 },
             };
             const postData = generatePostData();
-            const spyOnEncryptData = jest.spyOn(cryptography, 'encryptData').mockReturnValueOnce(postData.description);
+            const spyOnEncryptData = jest
+                .spyOn(cryptography, 'encryptData')
+                .mockReturnValueOnce(postData.description);
             const spyOnCreatePost = jest
                 .spyOn(postService, 'createPost')
                 .mockResolvedValue(
@@ -44,7 +47,7 @@ describe('Test Post Controllers', () => {
             await createPostController(req as Request, res as Response);
 
             expect(spyOnCreatePost).toHaveBeenCalled();
-            expect(spyOnEncryptData).toHaveBeenCalled()
+            expect(spyOnEncryptData).toHaveBeenCalled();
             expect(res.send).toHaveBeenCalled();
             expect(res.send).toHaveBeenCalledWith({
                 message: expect.any(String),
@@ -113,6 +116,7 @@ describe('Test Post Controllers', () => {
             const spyOnGetAllPosts = jest
                 .spyOn(postService, 'getAllPosts')
                 .mockResolvedValue(
+                    //@ts-ignore
                     generatePostDataArray() as unknown as (PostDocument & {
                         _id: unknown;
                     })[]
@@ -299,14 +303,14 @@ describe('Test Post Controllers', () => {
             res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-            }
+            };
 
             await changeLikePostController(req as Request, res as Response);
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.send).toHaveBeenCalled();
         });
-        
+
         it('should send 400 error if no user found in body', async () => {
             const postData = generatePostData();
 
@@ -314,19 +318,19 @@ describe('Test Post Controllers', () => {
                 body: {
                     postId: postData._id,
                     likeStatus: 'like',
-                }
-            }
+                },
+            };
 
             res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-            }
+            };
 
             await changeLikePostController(req as Request, res as Response);
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.send).toHaveBeenCalled();
-        })
+        });
 
         it('should send 400 error if no likeStatus is sent in params', async () => {
             const postData = generatePostData();
@@ -337,20 +341,18 @@ describe('Test Post Controllers', () => {
                         id: new mongoose.Types.ObjectId(),
                     },
                     postId: postData._id,
-                }
-            }
+                },
+            };
 
             res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-            }
+            };
 
             await changeLikePostController(req as Request, res as Response);
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.send).toHaveBeenCalled();
-        })
-
-
+        });
     });
 });

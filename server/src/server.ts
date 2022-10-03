@@ -1,21 +1,17 @@
-import express from "express";
-import morgan from "morgan";
-import bodyParser, { urlencoded } from "body-parser";
+import express from 'express';
+import morgan from 'morgan';
 import cors from 'cors';
 
-import routes from "./routes";
-import setupDatabase from "./db";
-
-
+import routes from './routes';
 
 const createServer = () => {
     const app = express();
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(morgan("combined"));
-    app.use(cors())    
-    app.use("/api/v1", routes);
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(morgan('combined'));
+    app.use(cors());
+    app.use('/api/v1', routes);
     return app;
 };
 

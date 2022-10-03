@@ -22,9 +22,7 @@ export const createPostController = async (req: Request, res: Response) => {
 
     try {
         const desc = encryptData(description, user?.id?.toString());
-        console.log(
-            `"${desc}" encrypted with "${user?.id?.toString()}" was previously "${description}"`
-        );
+
         const post = await createPost({
             description: desc,
             visibility,
@@ -47,9 +45,9 @@ export const getAllPostsController = async (req: Request, res: Response) => {
         const p = await getAllPosts();
         const posts = p.map(post => {
             try {
-                let id = post.user._id.toString();
+                const id = post.user._id.toString();
                 try {
-                    let desc = decryptData(post.description, id);
+                    const desc = decryptData(post.description, id);
                     post.description = desc;
                 } catch (err) {
                     throw new Error('Error while decrytption');
@@ -68,7 +66,6 @@ export const getAllPostsController = async (req: Request, res: Response) => {
             data: posts,
         });
     } catch (err: unknown) {
-        console.log({ err });
         return res.status(500).send({
             message: 'Some error occurred. Try Again.',
             error: err,

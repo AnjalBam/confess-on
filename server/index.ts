@@ -14,5 +14,6 @@ const app = createServer();
 })();
 
 app.listen(PORT, () => {
+    // eslint-disable-next-line no-console
     console.log(`Running at http://localhost:${PORT}`);
 });

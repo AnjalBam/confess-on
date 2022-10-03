@@ -1,18 +1,11 @@
 import { Query, Types } from 'mongoose';
 import Post, { PostDocument } from '../../models/post.model';
 import {
-    generatePostData,
     generatePostDataArray,
     validPostData,
     validPostInput,
 } from '../../test/fixtures';
-import {
-    createPost,
-    getPostById,
-    getPost,
-    getAllPosts,
-    likePost,
-} from '../post.service';
+import { createPost, getPostById, getPost, getAllPosts } from '../post.service';
 
 describe('TEST POST SERVICE', () => {
     describe('test post create', () => {
@@ -192,8 +185,13 @@ describe('TEST POST SERVICE', () => {
                     return {
                         lean: jest.fn().mockReturnThis(),
                         populate: jest.fn().mockRejectedValue('Error Occurred'),
-                    } as unknown as Query<unknown[], unknown, object, PostDocument>;
-                })
+                    } as unknown as Query<
+                        unknown[],
+                        unknown,
+                        object,
+                        PostDocument
+                    >;
+                });
             try {
                 const posts = await getAllPosts();
                 expect(posts).toBeUndefined();
@@ -235,7 +233,10 @@ describe('TEST POST SERVICE', () => {
                 };
                 const posts = await getAllPosts(filter);
                 expect(spyOnFind).toHaveBeenCalled();
-                expect(spyOnFind).toHaveBeenCalledWith({...filter, visibility: expect.anything()});
+                expect(spyOnFind).toHaveBeenCalledWith({
+                    ...filter,
+                    visibility: expect.anything(),
+                });
                 expect(posts.length).toBe(10);
             } catch (err) {
                 expect(err).toBeUndefined();

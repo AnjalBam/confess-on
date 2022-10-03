@@ -13,7 +13,7 @@ router.use(isAuthenticated);
 
 router.route('/').get(getAllPostsController).post(createPostController);
 
-router.route('/p/:id').get(getPostController)
+router.route('/p/:id').get(getPostController);
 
 router.patch('/p/like', changeLikePostController);
 
