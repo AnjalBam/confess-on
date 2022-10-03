@@ -40,6 +40,7 @@ export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
             ...filter,
             visibility: { $in: ['public', 'anonymous'] },
         })
+            .sort({ createdAt: -1 })
             .lean()
             .populate<{ user: UserDocument }>(
                 'user',
