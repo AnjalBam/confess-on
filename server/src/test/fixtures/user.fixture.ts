@@ -31,3 +31,9 @@ export const userData = {
     createdAt: new Date(),
     updatedAt: new Date(),
 };
+
+export const getValidUserDoc = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const { password, ...rest } = userData;
+    return rest;
+};
