@@ -7,15 +7,19 @@ import useQuery from 'hooks/useQuery';
 import PostsService from 'services/posts';
 import toast from 'react-hot-toast';
 import { PostData, ResponseType } from 'services/services.types';
+import UserService from 'services/users';
+import ProfileSection from 'components/Dashboard/ProfileSection';
 
 const Dashboard: NextPage = () => {
     const { isLoading, dispatchRequest } = useQuery();
     const [data, setData] = useState<ResponseType[]>([]);
+    const [userData, setUserData] = useState<ResponseType>();
 
     const [refetch, setRefetch] = useState(false);
 
     const postService = new PostsService();
-    
+    const userService = new UserService();
+
     const fetchGetData = useCallback(async () => {
         const { data, error } = await dispatchRequest(postService.getPosts);
         if (error) {
@@ -25,12 +29,26 @@ const Dashboard: NextPage = () => {
             setData(data.data);
             toast.success(data.message);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const fetchUserDetails = useCallback(async () => {
+        const { data, error } = await dispatchRequest(
+            userService.getUserDetails,
+            '633a649dd421c44c4d154efe'
+        );
+        if (error) {
+            toast.error(error.message || error.toString(), { icon: '🤯' });
+        }
+        if (data?.success) {
+            setUserData(data);
+        }
+    }, [dispatchRequest, userService.getUserDetails]);
 
     useEffect(() => {
         fetchGetData();
-    }, [fetchGetData]);
+        fetchUserDetails();
+    }, [fetchGetData, fetchUserDetails]);
 
     const {
         isLoading: isPostAddLoading,
@@ -57,7 +75,7 @@ const Dashboard: NextPage = () => {
             <div className="md:container mx-auto">
                 <div className="grid grid-flow-row grid-cols-4 gap-2">
                     <div className="hidden md:block">
-                        <h2>ProfileSection</h2>
+                        <ProfileSection />
                     </div>
                     <div className="col-span-4 md:col-span-2">
                         <DashboardContent

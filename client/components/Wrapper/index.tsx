@@ -1,4 +1,5 @@
-import React from 'react';
+import { userContext } from '../../context/user-context';
+import { useEffect, useContext } from 'react';
 
 const Wrapper: React.FC<{ children: React.ReactNode; className?: string }> = ({
     children,
