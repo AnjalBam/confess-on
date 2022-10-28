@@ -36,3 +36,17 @@ export const getUserDetailsController = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getMyDetails = async (req: Request, res: Response) => {
+    const userId = req.body.user.id;
+    try {
+        const user = await getUserById(userId);
+
+        return res.send({ message: 'Details fetch successful.', data: user });
+    } catch (error) {
+        return res.status(500).send({
+            message: 'Details cannot be fetched.',
+            error,
+        });
+    }
+};
