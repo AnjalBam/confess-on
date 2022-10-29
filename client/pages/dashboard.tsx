@@ -9,16 +9,15 @@ import toast from 'react-hot-toast';
 import { PostData, ResponseType } from 'services/services.types';
 import UserService from 'services/users';
 import ProfileSection from 'components/Dashboard/ProfileSection';
+import DefaultLayout from 'components/Layouts/DefaultLayout';
 
 const Dashboard: NextPage = () => {
     const { isLoading, dispatchRequest } = useQuery();
     const [data, setData] = useState<ResponseType[]>([]);
-    const [userData, setUserData] = useState<ResponseType>();
 
     const [refetch, setRefetch] = useState(false);
 
     const postService = new PostsService();
-    const userService = new UserService();
 
     const fetchGetData = useCallback(async () => {
         const { data, error } = await dispatchRequest(postService.getPosts);
@@ -32,23 +31,9 @@ const Dashboard: NextPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const fetchUserDetails = useCallback(async () => {
-        const { data, error } = await dispatchRequest(
-            userService.getUserDetails,
-            '633a649dd421c44c4d154efe'
-        );
-        if (error) {
-            toast.error(error.message || error.toString(), { icon: '🤯' });
-        }
-        if (data?.success) {
-            setUserData(data);
-        }
-    }, [dispatchRequest, userService.getUserDetails]);
-
     useEffect(() => {
         fetchGetData();
-        fetchUserDetails();
-    }, [fetchGetData, fetchUserDetails]);
+    }, [fetchGetData]);
 
     const {
         isLoading: isPostAddLoading,
@@ -70,14 +55,14 @@ const Dashboard: NextPage = () => {
     };
 
     return (
-        <>
+        <DefaultLayout>
             <IsLoggedIn />
             <div className="md:container mx-auto">
                 <div className="grid grid-flow-row grid-cols-4 gap-2">
                     <div className="hidden md:block">
                         <ProfileSection />
                     </div>
-                    <div className="col-span-4 md:col-span-2">
+                    <div className="col-span-4 md:col-span-3">
                         <DashboardContent
                             isLoading={isLoading}
                             addPost={addPost}
@@ -85,12 +70,12 @@ const Dashboard: NextPage = () => {
                             posts={data}
                         />
                     </div>
-                    <div className="hidden md:block">
+                    {/* <div className="hidden md:block">
                         <h2>Recommended for you</h2>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-        </>
+        </DefaultLayout>
     );
 };
 

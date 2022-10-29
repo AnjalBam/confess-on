@@ -6,6 +6,7 @@
 
 @import './varialbles';
 @import './utils';
+@import './landing';
 
 * {
     box-sizing: border-box;
@@ -29,6 +30,15 @@ a {
     text-decoration: none;
 }
 
-* {
-    box-sizing: border-box;
+.landing-nav {
+    height: $navbar_height;
+}
+
+.links {
+    .link {
+        padding-right: 0.75rem;
+        &:last-child {
+            padding-right: 0;
+        }
+    }
 }

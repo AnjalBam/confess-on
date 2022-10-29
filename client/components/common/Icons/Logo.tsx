@@ -1,10 +1,11 @@
 import React from 'react';
 import { IconProps } from './Icons.types';
+import { colors } from 'constant';
 
 const Logo: React.FC<IconProps> = ({
     height = 40,
     width = 40,
-    color = '#434343',
+    color = colors.primary,
     className = '',
 }) => {
     return (

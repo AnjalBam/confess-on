@@ -18,12 +18,12 @@ const Button: React.FC<ButtonProps> = ({
         primary
             ? 'bg-primary'
             : secondary
-            ? 'bg-secondary'
-            : danger
-            ? 'bg-danger'
-            : success
-            ? 'bg-success'
-            : 'bg-primary'
+                ? 'bg-secondary'
+                : danger
+                    ? 'bg-danger'
+                    : success
+                        ? 'bg-success'
+                        : 'bg-primary'
     }`;
     return (
         <button

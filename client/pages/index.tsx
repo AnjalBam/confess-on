@@ -10,6 +10,7 @@ import styles from '../styles/Home.module.scss';
 import useUser from 'hooks/useUser';
 import AuthenticationService from 'services/auth';
 import { AuthenticatedService } from 'services';
+import LandingPage from 'components/LandingPage';
 
 
 const Home: NextPage = () => {
@@ -30,29 +31,7 @@ const Home: NextPage = () => {
                 <title>ConfessOn</title>
             </Head>
             <main>
-                {!isLoggedIn ? (
-                    <>
-                        <Link href={routes.login}>
-                            <Button>Login</Button>
-                        </Link>
-                    </>
-                ) : (
-                    <>
-                        <Button
-                            onClick={() => {
-                                new AuthenticationService().logout();
-                                toast.success('Logged out successfully');
-                                revalidate();
-                            }}>
-                            Logout
-                        </Button>
-                        <Link href={'/dashboard'}> Dashboard </Link>
-                    </>
-                )}
-
-                <Button isLoading={isLoading} onClick={fetchData}>
-                    Test Connection
-                </Button>
+                <LandingPage />
             </main>
         </div>
     );
