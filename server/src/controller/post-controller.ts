@@ -118,17 +118,18 @@ export const changeLikePostController = async (req: Request, res: Response) => {
                 message: 'Post liked successfully',
                 data: post,
             });
-        } else if (likeStatus === 'unlike') {
+        }
+
+        if (likeStatus === 'unlike') {
             const post = await unlikePost(postId, user.id);
             return res.status(200).send({
                 message: 'Post unliked successfully',
                 data: post,
             });
-        } else {
-            return res.status(400).send({
-                message: 'Invalid like status',
-            });
         }
+        return res.status(400).send({
+            message: 'Invalid like status',
+        });
     } catch (err: unknown) {
         return res.status(400).send({
             message: `Error: ${err as string}`,
