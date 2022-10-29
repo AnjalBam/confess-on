@@ -1,11 +1,17 @@
-import { Query, Types } from 'mongoose';
+import mongoose, { Query, Types } from 'mongoose';
 import Post, { PostDocument } from '../../models/post.model';
 import {
     generatePostDataArray,
     validPostData,
     validPostInput,
 } from '../../test/fixtures';
-import { createPost, getPostById, getPost, getAllPosts } from '../post.service';
+import {
+    createPost,
+    getPostById,
+    getPost,
+    getAllPosts,
+    getAllPostsByUser,
+} from '../post.service';
 
 describe('TEST POST SERVICE', () => {
     describe('test post create', () => {
@@ -233,14 +239,50 @@ describe('TEST POST SERVICE', () => {
                 };
                 const posts = await getAllPosts(filter);
                 expect(spyOnFind).toHaveBeenCalled();
-                expect(spyOnFind).toHaveBeenCalledWith({
-                    ...filter,
-                    visibility: expect.anything(),
-                });
+                expect(spyOnFind).toHaveBeenCalledWith(
+                    {
+                        ...filter,
+                        visibility: expect.anything(),
+                    },
+                    {
+                        sort: expect.anything(),
+                    }
+                );
                 expect(posts.length).toBe(10);
             } catch (err) {
                 expect(err).toBeUndefined();
             }
+        });
+    });
+
+    describe('Test getAllPostsByUser', () => {
+        it('should return all posts', async () => {
+            const length = 10;
+            const posts = generatePostDataArray(length);
+            const userId = new mongoose.Types.ObjectId();
+
+            const spyOnFind = jest
+                .spyOn(Post, 'find')
+                .mockReturnValueOnce(
+                    posts as unknown as Query<
+                        unknown[],
+                        unknown,
+                        object,
+                        PostDocument
+                    >
+                );
+
+            const ps = await getAllPostsByUser(userId);
+
+            expect(spyOnFind).toHaveBeenCalledWith({
+                user: userId,
+            });
+            expect(ps).toHaveLength(length);
+            expect(false).toBeTruthy();
+        });
+
+        it('should throw error if any occurs', async () => {
+            expect(false).toBe(true);
         });
     });
 });

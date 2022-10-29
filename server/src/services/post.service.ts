@@ -36,11 +36,13 @@ export const getPost = async (filter: FilterQuery<PostDocument>) => {
 
 export const getAllPosts = async (filter: FilterQuery<PostDocument> = {}) => {
     try {
-        const posts = await Post.find({
-            ...filter,
-            visibility: { $in: ['public', 'anonymous'] },
-        })
-            .sort({ createdAt: -1 })
+        const posts = await Post.find(
+            {
+                ...filter,
+                visibility: { $in: ['public', 'anonymous'] },
+            },
+            { sort: { createdAt: -1 } }
+        )
             .lean()
             .populate<{ user: UserDocument }>(
                 'user',
@@ -92,4 +94,10 @@ export const unlikePost = async (
     } catch (err) {
         throw new Error(err as string);
     }
+};
+
+export const getAllPostsByUser = async (
+    userId: string | mongoose.Types.ObjectId
+) => {
+    return userId;
 };

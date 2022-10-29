@@ -355,4 +355,19 @@ describe('Test Post Controllers', () => {
             expect(res.send).toHaveBeenCalled();
         });
     });
+
+    describe('test getMyPostsController', () => {
+        it('should return all the posts for a user on valid request', async () => {
+            const posts = generatePostDataArray();
+
+            req = {
+                body: {
+                    user: {
+                        id: new mongoose.Types.ObjectId(),
+                    },
+                },
+            };
+            expect(true).toBe(true);
+        });
+    });
 });

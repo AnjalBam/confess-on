@@ -137,3 +137,9 @@ export const changeLikePostController = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getMyPostsController = async (req: Request, res: Response) => {
+    return res.status(501).send({
+        message: 'getting my posts',
+    });
+};
