@@ -45,9 +45,9 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
             if (data.success) {
                 setIsLiked(false);
                 if (Array.isArray(post.likes)) {
-                    post.likes.filter(
-                        (id: string) => id.toString() !== userData.id.toString()
-                    );
+                    post.likes = post.likes.filter((id: string) => {
+                        return id.toString() !== userData.id.toString();
+                    });
                 }
             }
         } else {
@@ -66,7 +66,9 @@ const Post: React.FC<{ post: any }> = ({ post }) => {
             if (_data.success) {
                 setIsLiked(true);
                 if (Array.isArray(post.likes)) {
-                    post.likes.push(userData.id);
+                    if (!post.likes.includes(userData.id)) {
+                        post.likes.push(userData.id);
+                    }
                 }
             }
         }
