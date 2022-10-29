@@ -38,11 +38,25 @@ export const getUserDetailsController = async (req: Request, res: Response) => {
 };
 
 export const getMyDetails = async (req: Request, res: Response) => {
+    if (!req.body.user) {
+        return res.status(401).send({
+            message: 'You are not authenticated.',
+        });
+    }
+
+    if (!req.body.user.id) {
+        return res.status(500).send({
+            message: 'No user id in request object.',
+            error: 'Internal server error',
+        });
+    }
     const userId = req.body.user.id;
     try {
         const user = await getUserById(userId);
 
-        return res.send({ message: 'Details fetch successful.', data: user });
+        return res
+            .status(200)
+            .send({ message: 'Details fetch successful.', data: user });
     } catch (error) {
         return res.status(500).send({
             message: 'Details cannot be fetched.',

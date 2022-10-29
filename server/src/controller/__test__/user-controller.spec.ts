@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import mongoose, { ObjectId } from 'mongoose';
-import { getUserDetailsController } from '../user-controller';
+import { getMyDetails, getUserDetailsController } from '../user-controller';
 import * as userServices from '../../services/user.service';
 import { getValidUserDoc } from '../../test/fixtures';
 import { UserDocument } from '../../models/user.model';
@@ -78,6 +78,93 @@ describe('TEST USER CONTROLLER =>', () => {
 
             expect(res.send).toHaveBeenCalledWith({
                 message: expect.any(String),
+            });
+        });
+    });
+
+    describe('test getMyDetailsController', () => {
+        it('should return the authenticated user details upon request.', async () => {
+            const validUserDoc =
+                getValidUserDoc() as unknown as UserDocument & {
+                    _id: ObjectId;
+                };
+
+            req = {
+                body: {
+                    user: { ...validUserDoc, id: validUserDoc._id },
+                },
+            };
+
+            const spyOnUserService = jest
+                .spyOn(userServices, 'getUserById')
+                .mockResolvedValue(validUserDoc);
+
+            await getMyDetails(req as Request, res as Response);
+
+            expect(spyOnUserService).toHaveBeenCalledWith(validUserDoc._id);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.send).toHaveBeenCalledWith({
+                message: expect.any(String),
+                data: expect.any(Object),
+            });
+        });
+
+        it('should return 401 if no user present in body.', async () => {
+            req = {
+                body: {},
+            };
+
+            await getMyDetails(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(401);
+            expect(res.send).toHaveBeenCalledWith({
+                message: expect.any(String),
+            });
+        });
+
+        it('should return 500 if no user id present in body.user', async () => {
+            const validUserDoc =
+                getValidUserDoc() as unknown as UserDocument & {
+                    _id: ObjectId;
+                };
+            req = {
+                body: {
+                    user: { ...validUserDoc },
+                },
+            };
+
+            await getMyDetails(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({
+                message: expect.any(String),
+                error: expect.anything(),
+            });
+        });
+
+        it('should throw 500 if user service throws some error.', async () => {
+            const spyOnGetUserById = jest
+                .spyOn(userServices, 'getUserById')
+                .mockRejectedValue(new Error('Error Occurred'));
+
+            const validUserDoc =
+                getValidUserDoc() as unknown as UserDocument & {
+                    _id: ObjectId;
+                };
+            req = {
+                body: {
+                    user: { ...validUserDoc, id: validUserDoc._id },
+                },
+            };
+
+            await getMyDetails(req as Request, res as Response);
+
+            expect(spyOnGetUserById).toHaveBeenCalledWith(validUserDoc._id);
+
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({
+                message: expect.any(String),
+                error: expect.any(Error),
             });
         });
     });
