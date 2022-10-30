@@ -99,5 +99,16 @@ export const unlikePost = async (
 export const getAllPostsByUser = async (
     userId: string | mongoose.Types.ObjectId
 ) => {
-    return userId;
+    try {
+        const posts = await Post.find(
+            { user: userId },
+            { sort: { createdAt: -1 } }
+        ).populate<{ user: UserDocument }>(
+            'user',
+            '-password -salt -createdAt -updatedAt'
+        );
+        return posts;
+    } catch (err: unknown) {
+        throw err;
+    }
 };

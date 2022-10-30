@@ -11,35 +11,19 @@ describe('USER SERVICES TEST', () => {
                 ...getValidUserDoc(),
                 _id: userId,
             };
-            // const spyOnFindById = jest
-            //     .spyOn(userModel, 'findById')
-            //     .mockImplementationOnce(
-            //         () =>
-            //             ({
-            //                 select: jest.fn().mockReturnValue(retValue),
-            //             } as unknown as Query<
-            //                 unknown,
-            //                 unknown,
-            //                 object,
-            //                 UserDocument
-            //             >)
-            //     );
 
             const spyOnFindById = jest
                 .spyOn(userModel, 'findById')
-                .mockReturnValue(
-                    retValue as unknown as Query<
+                .mockImplementationOnce(() => {
+                    return {
+                        select: jest.fn().mockReturnValue(retValue),
+                    } as unknown as Query<
                         unknown,
                         unknown,
                         object,
                         UserDocument
-                    >
-                );
-            const spyOnSelect = jest
-                .spyOn(userModel.prototype, 'select')
-                .mockReturnValue(
-                    retValue as unknown
-                );
+                    >;
+                });
             try {
                 const user = await getUserById(userId);
                 expect(spyOnFindById).toHaveBeenCalledWith(userId);
@@ -54,11 +38,22 @@ describe('USER SERVICES TEST', () => {
 
         it('should throw error if any occur', async () => {
             const userId = new Types.ObjectId();
-            const spyOnFindById = jest
-                .spyOn(userModel, 'findById')
-                .mockRejectedValue(new Error('Error occurred'));
 
             try {
+                const spyOnFindById = jest
+                    .spyOn(userModel, 'findById')
+                    .mockImplementationOnce(() => {
+                        return {
+                            select: jest
+                                .fn()
+                                .mockRejectedValue(new Error('Error')),
+                        } as unknown as Query<
+                            unknown,
+                            unknown,
+                            object,
+                            UserDocument
+                        >;
+                    });
                 const user = await getUserById(userId);
                 expect(user).toBeUndefined();
                 expect(spyOnFindById).toThrow();

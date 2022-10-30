@@ -258,31 +258,69 @@ describe('TEST POST SERVICE', () => {
     describe('Test getAllPostsByUser', () => {
         it('should return all posts', async () => {
             const length = 10;
-            const posts = generatePostDataArray(length);
             const userId = new mongoose.Types.ObjectId();
 
             const spyOnFind = jest
                 .spyOn(Post, 'find')
-                .mockReturnValueOnce(
-                    posts as unknown as Query<
+                .mockImplementationOnce(() => {
+                    return {
+                        populate: jest
+                            .fn()
+                            .mockReturnValue(
+                                generatePostDataArray(
+                                    length
+                                ) as unknown as Query<
+                                    unknown[],
+                                    unknown,
+                                    object,
+                                    PostDocument
+                                >
+                            ),
+                    } as unknown as Query<
                         unknown[],
                         unknown,
                         object,
                         PostDocument
-                    >
-                );
+                    >;
+                });
 
             const ps = await getAllPostsByUser(userId);
 
-            expect(spyOnFind).toHaveBeenCalledWith({
-                user: userId,
-            });
+            expect(spyOnFind).toHaveBeenCalledWith(
+                {
+                    user: userId,
+                },
+                {
+                    sort: expect.any(Object),
+                }
+            );
             expect(ps).toHaveLength(length);
-            expect(false).toBeTruthy();
         });
 
         it('should throw error if any occurs', async () => {
-            expect(false).toBe(true);
+            const userId = new Types.ObjectId();
+            const spyOnFind = jest
+                .spyOn(Post, 'find')
+                .mockImplementationOnce(() => {
+                    return {
+                        lean: jest.fn().mockReturnThis(),
+                        populate: jest.fn().mockRejectedValue(new Error('Error Occurred')),
+                    } as unknown as Query<
+                        unknown[],
+                        unknown,
+                        object,
+                        PostDocument
+                    >;
+                });
+            try {
+                const posts = await getAllPostsByUser(userId);
+                expect(posts).toBeUndefined();
+                expect(posts).toThrow();
+                expect(spyOnFind).toHaveBeenCalled();
+            } catch (err: unknown) {
+                expect(err).toBeDefined();
+                expect(err).toBeInstanceOf(Error);
+            }
         });
     });
 });

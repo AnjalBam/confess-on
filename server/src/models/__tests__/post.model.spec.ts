@@ -53,7 +53,7 @@ describe('Test Post Model', () => {
     it('should not save without user', async () => {
         const post = new Post({
             ...validPostInput,
-            user: '',
+            user: undefined,
         });
 
         let err: any;
