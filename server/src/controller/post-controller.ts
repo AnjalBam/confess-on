@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { UserDocument } from '../models/user.model';
-import { createPost, getAllPosts, getPostById } from '../services/post.service';
+import {
+    createPost,
+    getAllPosts,
+    getAllPostsByUser,
+    getPostById,
+} from '../services/post.service';
 import { likePost, unlikePost } from '../services/post.service';
 import { decryptData, encryptData } from '../utils/cryptography';
 
@@ -139,7 +144,23 @@ export const changeLikePostController = async (req: Request, res: Response) => {
 };
 
 export const getMyPostsController = async (req: Request, res: Response) => {
-    return res.status(501).send({
-        message: 'getting my posts',
-    });
+    const userId = req.body?.user?.id;
+    if (!userId) {
+        return res.status(401).send({
+            message: 'Unauthenticated',
+        });
+    }
+
+    try {
+        const posts = await getAllPostsByUser(userId);
+        return res.status(200).send({
+            message: 'Posts fetched successfully',
+            data: posts,
+        });
+    } catch (err: unknown) {
+        res.status(500).send({
+            message: 'Internal Server Error.',
+            error: err,
+        });
+    }
 };

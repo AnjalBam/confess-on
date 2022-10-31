@@ -3,6 +3,7 @@ import {
     changeLikePostController,
     createPostController,
     getAllPostsController,
+    getMyPostsController,
     getPostController,
 } from '../controller/post-controller';
 import { isAuthenticated } from '../middleware/auth.middleware';
@@ -16,5 +17,7 @@ router.route('/').get(getAllPostsController).post(createPostController);
 router.route('/p/:id').get(getPostController);
 
 router.patch('/p/like', changeLikePostController);
+
+router.get('/p/my-posts/', getMyPostsController);
 
 export default router;

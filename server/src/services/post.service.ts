@@ -109,6 +109,6 @@ export const getAllPostsByUser = async (
         );
         return posts;
     } catch (err: unknown) {
-        throw err;
+        throw new Error(err as string);
     }
 };

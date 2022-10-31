@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { getUserById } from '../services/user.service';
 
 export const getUserDetailsController = async (req: Request, res: Response) => {
-    const user = req.body.user;
-    const userId = req.params.id;
+    const user = req.body?.user;
+    const userId = req.params?.id;
 
     if (!user) {
         return res.status(401).send({

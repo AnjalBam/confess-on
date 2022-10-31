@@ -3,6 +3,7 @@ import {
     changeLikePostController,
     createPostController,
     getAllPostsController,
+    getMyPostsController,
     getPostController,
 } from '../post-controller';
 import * as postService from '../../services/post.service';
@@ -12,9 +13,10 @@ import {
     generatePostData,
     validPostInput,
 } from '../../test/fixtures';
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { PostDocument } from '../../models/post.model';
 import * as cryptography from '../../utils/cryptography';
+import { UserDocument } from '../../models/user.model';
 
 describe('Test Post Controllers', () => {
     let req: Partial<Request>;
@@ -358,7 +360,14 @@ describe('Test Post Controllers', () => {
 
     describe('test getMyPostsController', () => {
         it('should return all the posts for a user on valid request', async () => {
-            const posts = generatePostDataArray();
+            const posts = generatePostDataArray() as unknown as (Omit<
+                PostDocument & { _id: ObjectId },
+                'user'
+            > & { user: UserDocument })[];
+
+            jest.spyOn(postService, 'getAllPostsByUser').mockResolvedValue(
+                posts
+            );
 
             req = {
                 body: {
@@ -367,7 +376,45 @@ describe('Test Post Controllers', () => {
                     },
                 },
             };
-            expect(true).toBe(true);
+
+            await getMyPostsController(req as Request, res as Response);
+            expect(res.status).toHaveBeenCalledWith(200);
+        });
+
+        // 401 for unauthenticated user
+        it('should return 401 for unauthenticated requests', async () => {
+            try {
+                req = {
+                    body: {},
+                };
+
+                await getMyPostsController(req as Request, res as Response);
+                expect(res.status).toHaveBeenCalledWith(401);
+                expect(res.send).toHaveBeenCalledWith(expect.any(Object));
+            } catch (error: unknown) {
+                expect(error).toBeDefined();
+            }
+        });
+
+        // 500 for any error occur
+        it('should return 500 for any errors occurred', async () => {
+            req = {
+                body: {
+                    user: {
+                        id: new mongoose.Types.ObjectId(),
+                    },
+                },
+            };
+            const spyOnGetAllPostsByUser = jest
+                .spyOn(postService, 'getAllPostsByUser')
+                .mockRejectedValue('Error occurred');
+
+            try {
+                await getMyPostsController(req as Request, res as Response);
+            } catch (error:unknown) {
+                expect(error).toBeDefined();
+            }
+            expect(res.status).toHaveBeenCalledWith(500);
         });
     });
 });

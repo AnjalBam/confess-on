@@ -50,6 +50,35 @@ describe('TEST USER CONTROLLER =>', () => {
             });
         });
 
+        it('should return 401 for no user property found in body', async () => {
+            req = {
+                params: {},
+                body: {},
+            };
+
+            await getUserDetailsController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(401);
+        });
+
+        it('should return 400 for no userId provided', async () => {
+            const validUserDoc =
+                getValidUserDoc() as unknown as UserDocument & {
+                    _id: ObjectId;
+                };
+
+            req = {
+                body: {
+                    user: { ...validUserDoc, id: validUserDoc._id },
+                },
+                params: {},
+            };
+
+            await getUserDetailsController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+        });
+
         it('should return 404 NOT FOUND WHEN user is not found', async () => {
             const userId = new mongoose.Types.ObjectId().toString();
             const validUserDoc =
@@ -79,6 +108,31 @@ describe('TEST USER CONTROLLER =>', () => {
             expect(res.send).toHaveBeenCalledWith({
                 message: expect.any(String),
             });
+        });
+
+        it('should return 500 for any error occurred', async () => {
+            const userId = new mongoose.Types.ObjectId().toString();
+            const validUserDoc =
+                getValidUserDoc() as unknown as UserDocument & {
+                    _id: ObjectId;
+                };
+
+            jest.spyOn(userServices, 'getUserById').mockRejectedValue(
+                new Error('Error')
+            );
+
+            req = {
+                params: {
+                    id: userId,
+                },
+                body: {
+                    user: { ...validUserDoc, id: validUserDoc._id },
+                },
+            };
+
+            await getUserDetailsController(req as Request, res as Response);
+
+            expect(res.status).toHaveBeenCalledWith(500);
         });
     });
 
