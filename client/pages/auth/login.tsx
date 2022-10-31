@@ -12,6 +12,7 @@ import { Cookies } from 'react-cookie';
 import React from 'react';
 import useQuery from 'hooks/useQuery';
 import { AuthContext } from 'context/auth-context';
+import DefaultLayout from 'components/Layouts/DefaultLayout';
 
 const cookies = new Cookies();
 
@@ -60,14 +61,14 @@ const LoginPage: NextPage = () => {
         toast.error('Some error occurred. Please try again.');
     };
     return (
-        <div>
+        <DefaultLayout>
             <Head>
                 <title>Login | ConfessOn</title>
             </Head>
             <section>
                 <Login handleSubmit={handleSubmit} />
             </section>
-        </div>
+        </DefaultLayout>
     );
 };
 

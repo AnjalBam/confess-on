@@ -13,6 +13,7 @@ import useQuery from 'hooks/useQuery';
 
 import SignUp from 'components/SignUp';
 import { routes } from 'constant';
+import DefaultLayout from 'components/Layouts/DefaultLayout';
 
 
 const SignUpPage: NextPage = () => {
@@ -55,14 +56,14 @@ const SignUpPage: NextPage = () => {
         toast.error('Some error occurred. Please try again.');
     };
     return (
-        <div>
+        <DefaultLayout>
             <Head>
                 <title>SignUp | ConfessOn</title>
             </Head>
             <section>
                 <SignUp handleSubmit={handleSubmit} />
             </section>
-        </div>
+        </DefaultLayout>
     );
 };
 
